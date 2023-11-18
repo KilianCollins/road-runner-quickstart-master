@@ -33,12 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.teamcode.util.Encoder;
 
 /*
  * This file contains an example of a Linear "OpMode".
@@ -68,71 +63,27 @@ import org.firstinspires.ftc.teamcode.util.Encoder;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@TeleOp(group="drive")
+@TeleOp(name="Basic: Omni Linear OpMode", group="Linear OpMode")
 @Disabled
-public class TeleOpNoArmIntake extends LinearOpMode {
+public class TeleOpYesArmYesIntake extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
-   // Servo servo;
-///////////////////////////////////////////////////////////////
-    //private static final double MID = 0.5;
-
-///////////////////////////////////////////////////////////////
     private DcMotor leftFrontDrive = null;
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
-//jaws
-    private  DcMotor intakeMotor = null;
-    private Servo right_Intake_Servo_Jaw = null;
-    private Servo left_Intake_Servo_Jaw = null;
-//shoulder
-    private DcMotor left_Shoulder_Motor = null;
-    private DcMotor right_Shoulder_Motor = null;
-//elbow
-    private Servo left_Elbow_Servo = null;
-    private Servo right_Elbow_Servo = null;
-//wrist
-
-    private Encoder leftEncoder = null;
-    private Encoder rightEncoder = null;
-    private Encoder frontEncoder = null;
-    private int  low_shoulder = 200; //537.7 for 312
-    private double shoulder_power = 0.75;
-
-
 
     @Override
     public void runOpMode() {
 
         // Initialize the hardware variables. Note that the strings used here must correspond
         // to the names assigned during the robot configuration step on the DS or RC devices.
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //drive
-        leftFrontDrive  = hardwareMap.get(DcMotor.class, "leftFront");
-        leftBackDrive  = hardwareMap.get(DcMotor.class, "leftRear");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFront");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "rightRear");
+        leftFrontDrive  = hardwareMap.get(DcMotor.class, "left_front_drive");
+        leftBackDrive  = hardwareMap.get(DcMotor.class, "left_back_drive");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
 
-        ///////jaws
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-//        left_Intake_Servo_Jaw = hardwareMap.get(Servo.class, "leftIntakeServoJaw");
-//        right_Intake_Servo_Jaw = hardwareMap.get(Servo.class, "rightIntakeServoJaw");
-
-        //shoulder
-        left_Shoulder_Motor = hardwareMap.get(DcMotor.class, "leftShoulderMotor");
-        right_Shoulder_Motor = hardwareMap.get(DcMotor.class, "rightShoulderMotor");
-
-        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftRear"));// remane odo pods
-        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront"));
-        frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftFront"));
-
-
-        //elbow
-//        left_Elbow_Servo = hardwareMap.get(Servo.class, "elbowLeftServo");
-//        right_Elbow_Servo = hardwareMap.get(Servo.class, "elbowRightServo");
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
         // ########################################################################################
@@ -142,123 +93,34 @@ public class TeleOpNoArmIntake extends LinearOpMode {
         // that your motors are turning in the correct direction.  So, start out with the reversals here, BUT
         // when you first test your robot, push the left joystick forward and observe the direction the wheels turn.
         // Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward
-        // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward
-        /*
-        dont need to delcare directions for servo  i think
-         */
-////////////////////////////////////////////////////////////////////////////////////
-        //drive
+        // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward.
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 
-        //jaws
-        intakeMotor.setDirection(DcMotor.Direction.REVERSE);
-
-        //shoulder
-        left_Shoulder_Motor.setDirection(DcMotor.Direction.FORWARD);
-        left_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
-        right_Shoulder_Motor.setDirection(DcMotor.Direction.FORWARD);
-        right_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        right_Shoulder_Motor.setTargetPosition(low_shoulder);
-        left_Shoulder_Motor.setTargetPosition(low_shoulder);
-
-        right_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        left_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-
-////////////////////////////////////////////////////////////////////////////////////
-
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
-       // telemetry.addData("Front left/Right shoulder pos before start", "%4.2f, %4.2f",left_Shoulder_Motor.getCurrentPosition(), right_Shoulder_Motor.getCurrentPosition());
         telemetry.update();
 
         waitForStart();
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         while (opModeIsActive()) {
             double max;
 
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
-            //game pad 1
             double axial   = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
             double lateral =  gamepad1.left_stick_x;
             double yaw     =  gamepad1.right_stick_x;
-            double intake = gamepad1.left_trigger;
-            double shoulder_test = gamepad2.left_trigger;
-           // boolean reverseIntake = gamepad1.left_bumper;
-            ////////////////////////////////// ////////////////////////////////// //////////////////////////////////
-            //game pad 2
-            //shoulder controls
-            double shoulder_resting_input_val = gamepad2.right_stick_x;
-
-
-           // double shoulder_Scoring_input_val = gamepad2.right_trigger;
-            // elbow
-           // double elbow_resting_pos = gamepad2.right_trigger;
-           // boolean elbow_Scoring_pos = gamepad2.right_bumper;
-
 
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.
-
-            double leftODO = leftEncoder.getCurrentPosition();
-            double rightODO = rightEncoder.getCurrentPosition();
-            double backODO = frontEncoder.getCurrentPosition();
-
-
-
-
-
-            //drive G1
             double leftFrontPower  = axial + lateral + yaw;
             double rightFrontPower = axial - lateral - yaw;
             double leftBackPower   = axial - lateral + yaw;
             double rightBackPower  = axial + lateral - yaw;
-
-            double shoulder_power_score_output_pos = shoulder_resting_input_val; // trigger is a flaot
-
-
-            if (gamepad2.b){
-
-                left_Shoulder_Motor.setPower(shoulder_power);
-                right_Shoulder_Motor.setPower(shoulder_power);
-
-
-
-
-            }
-
-            // score G2
-           // double shoulder_power_at_rest_output_pos = t;//should be zero
-          //  double shoulder_power_score_output_pos = shoulder_Scoring_input_val;
-
-
-
-
-           // double  reverse_Intake = -(reverseIntake); //will need later
-           // double  intakereverse = -(intakeReverse);
-     //////////////////////////////////////////////////////////////
-           double limit = shoulder_power;
-
-
-
-            if (limit > 1.0){
-                shoulder_power = shoulder_power * 0.5;
-            }
-/*
-needs a intake reverse
- */
-
-
 
             // Normalize the values so no wheel power exceeds 100%
             // This ensures that the robot maintains the desired motion.
@@ -266,19 +128,18 @@ needs a intake reverse
             max = Math.max(max, Math.abs(leftBackPower));
             max = Math.max(max, Math.abs(rightBackPower));
 
-
-
             if (max > 1.0) {
                 leftFrontPower  /= max;
                 rightFrontPower /= max;
                 leftBackPower   /= max;
                 rightBackPower  /= max;
-
-                //scrore G2
-//                shoulder_power_at_rest_output_pos  /= max;
-//                shoulder_power_score_output_pos  /= max;
-                //intakeMove  /= max;
             }
+
+
+//            if (gamepad2.a){
+//                lef
+//
+//            }
 
             // This is test code:
             //
@@ -296,36 +157,17 @@ needs a intake reverse
             rightFrontPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
             rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
             */
-            //test arm shoulder
-//            shoulder_power_at_rest_output_pos  = gamepad1.x ? 0.40 : 0.0;  // X gamepad
-//            shoulder_power_score_output_pos  = gamepad1.a ? .40 : 0.0;  // A gamepad
-
 
             // Send calculated power to wheels
             leftFrontDrive.setPower(leftFrontPower);
             rightFrontDrive.setPower(rightFrontPower);
             leftBackDrive.setPower(leftBackPower);
             rightBackDrive.setPower(rightBackPower);
-            intakeMotor.setPower(intake);
-
-//            left_Shoulder_Motor.setPower(shoulder_power_at_rest_output_pos);
-//            right_Shoulder_Motor.setPower(shoulder_power_at_rest_output_pos);
-
-
-
-
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
-            telemetry.addData("l: , r: , b: ", "%4.2f, %4.2f, %4.2f", leftODO,rightODO,backODO);
-            telemetry.addData("arm pos, l: , r: ", "%4.2f, %4.2f",  left_Shoulder_Motor.getCurrentPosition(), right_Shoulder_Motor.getCurrentPosition());
-
-          //  telemetry.addData("shoulder  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
             telemetry.update();
         }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    }
-
-}
+    }}
