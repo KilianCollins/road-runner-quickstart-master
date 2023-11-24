@@ -133,7 +133,7 @@ public class LeaugeOneTeleOpNoRocket extends LinearOpMode {
          finger_two_servo = hardwareMap.get(Servo.class, "fingerTwo");
          rocket_Launcher_servo = hardwareMap.get(Servo.class, "droneLauncher");
 //odometry
-        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftRear"));// remane odo pods
+        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftRear"));// // NEEW  port
         rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront"));
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftFront"));
 

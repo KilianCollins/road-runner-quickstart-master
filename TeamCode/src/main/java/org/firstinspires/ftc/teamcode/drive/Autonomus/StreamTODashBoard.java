@@ -27,11 +27,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode.drive.Autonomus;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -49,7 +50,7 @@ import java.util.List;
  */
 @TeleOp(name = "Concept: TensorFlow Object Detection Easy", group = "Concept")
 @Disabled
-public class ConceptTensorFlowObjectDetectionEasy extends LinearOpMode {
+public class StreamTODashBoard extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
@@ -112,7 +113,7 @@ public class ConceptTensorFlowObjectDetectionEasy extends LinearOpMode {
         // Create the vision portal the easy way.
         if (USE_WEBCAM) {
             visionPortal = VisionPortal.easyCreateWithDefaults(
-                hardwareMap.get(WebcamName.class, "Webcam 1"), tfod);
+                hardwareMap.get(WebcamName.class, "webcam1"), tfod);
         } else {
             visionPortal = VisionPortal.easyCreateWithDefaults(
                 BuiltinCameraDirection.BACK, tfod);
