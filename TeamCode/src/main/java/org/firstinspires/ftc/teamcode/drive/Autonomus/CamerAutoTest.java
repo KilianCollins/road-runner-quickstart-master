@@ -2,18 +2,11 @@ package org.firstinspires.ftc.teamcode.drive.Autonomus;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
@@ -33,6 +26,12 @@ public class CamerAutoTest extends LinearOpMode {
     double cY = 0;
     double width = 0;
 
+    double spikeRight_MIN = 20.0;
+    double spikeRight_MAX = 26.0;
+
+    double spikeMiddle_MIN = 29.0;
+    double spikeMiddle_MAX = 31.0;
+
     private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive = null;
 
     private double front_left_wheel_power, front_right_wheel_power, back_left_wheel_power, back_right_wheel_power;
@@ -42,7 +41,7 @@ public class CamerAutoTest extends LinearOpMode {
     private static final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
 
     // Calculate the distance using the formula
-    public static final double objectWidthInRealWorldUnits = 3.75;  // Replace with the actual width of the object in real-world units
+    public static final double objectWidthInRealWorldUnits = 4;  // Replace with the actual width of the object in real-world units
     public static final double focalLength = 728;  // Replace with the focal length of the camera in pixels
 
 
@@ -55,6 +54,8 @@ public class CamerAutoTest extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         FtcDashboard.getInstance().startCameraStream(controlHubCam, 30);
 
+        YellowBlobDetectionPipeline yellowBlobDetectionPipeline = new YellowBlobDetectionPipeline();
+
        // leftFrontDrive  = hardwareMap.get(DcMotor .class, "leftFront");
         leftBackDrive  = hardwareMap.get(DcMotor.class, "leftRear");
        // rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFront");
@@ -65,41 +66,95 @@ public class CamerAutoTest extends LinearOpMode {
        // rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
 
+   while (opModeInInit()) {
+       telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
+       telemetry.addData("Distance in Inch", (yellowBlobDetectionPipeline.getDistance(width)));
+       telemetry.update();
+
+//pre initalization confrimation
+       if ((yellowBlobDetectionPipeline.getDistance(width) > spikeRight_MIN) && (yellowBlobDetectionPipeline.getDistance(width) < spikeRight_MAX)) {
+           telemetry.addLine("i see the prop its on spike right ");
+
+       } else if ((yellowBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN) && (yellowBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX)) {
+           telemetry.addLine("i see the prop its on spike middle ");
+
+       } else if (yellowBlobDetectionPipeline.getDistance(width) > 50) {
+           telemetry.addLine("i dont see it so it must be spike left");
+
+       }
+       continue;
+   }
+
 
         waitForStart();
 
-        while (opModeIsActive()) {
-            YellowBlobDetectionPipeline yellowblobpipeline = new YellowBlobDetectionPipeline();
+//        boolean spikeRight = getDistance(width) > 23.00 && getDistance(width) < 25.50;
+//        boolean spikeMiddle = getDistance(width) > 25.00 && getDistance(width) < 29.00;
+//// spike left is not ealisly inframe so the default will be left
+//        boolean spikeLEFT = getDistance(width) > 29;
+
+
+
+
+
+            while (opModeIsActive()) {
 
             telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
-            telemetry.addData("Distance in Inch", (getDistance(width)));
-            telemetry.update();
+            telemetry.addData("Distance in Inch", (yellowBlobDetectionPipeline.getDistance(width)));
+            telemetry.addData(" actual width val: ", (width));
+           // telemetry.addData("  val: ", (width));
 
+// spike right
+            if (yellowBlobDetectionPipeline.getDistance(width) > spikeRight_MIN && yellowBlobDetectionPipeline.getDistance(width) < spikeRight_MAX ){
+                telemetry.addLine("i see the prop its on spike right ");
+                telemetry.update();
 
-            if (getDistance(width) > 4.26 && getDistance(width) < 5.00 ){
                 //front
                 //leftFrontDrive.setPower(0.5);
                // rightFrontDrive.setPower(0.5);
                 //back
                 rightBackDrive.setPower(0.5);
                 leftBackDrive.setPower(0.5);
-            }else{
-                //leftFrontDrive.setPower(-0.5);
+                sleep(3000);
+                rightBackDrive.setPower(0);
+                leftBackDrive.setPower(0);
+// spike middle
+            } if (yellowBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN && yellowBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX ) {
+                telemetry.addLine("i see the prop its on spike middle 999999999999999");
+                telemetry.update();
+
+                rightBackDrive.setPower(0.5);
+                leftBackDrive.setPower(0.5);
+                sleep(1000);
+                rightBackDrive.setPower(0);
+                leftBackDrive.setPower(0);
+                    sleep(1000);
+
+                    rightBackDrive.setPower(0.5);
+                    leftBackDrive.setPower(0.5);
+                    sleep(1000);
+                    rightBackDrive.setPower(0);
+                    leftBackDrive.setPower(0);
+            }
+// spike left && prop not found
+             if  (yellowBlobDetectionPipeline.getDistance(width) > 50){
+                telemetry.addLine("i dont see it so it must be spike left");
+                 telemetry.update();
+
+                 //leftFrontDrive.setPower(-0.5);
                // rightFrontDrive.setPower(-0.5);
                 //back
-                rightBackDrive.setPower(-0.5);
-                leftBackDrive.setPower(-0.5);
+//                rightBackDrive.setPower(0.5);
+//                leftBackDrive.setPower(-0.5);
+//                sleep(3500);
+//                rightBackDrive.setPower(0);
+//                leftBackDrive.setPower(0);
 
             }
+                telemetry.update();
 
 
-
-
-
-
-
-
-            // The OpenCV pipeline automatically processes frames and handles detection
+                // The OpenCV pipeline automatically processes frames and handles detection
         }
 
         // Release resources
@@ -196,16 +251,21 @@ public class CamerAutoTest extends LinearOpMode {
 
             return largestContour;
         }
+
         private double calculateWidth(MatOfPoint contour) {
             Rect boundingRect = Imgproc.boundingRect(contour);
             return boundingRect.width;
         }
+        public double getDistance(double width){
+            double distance = (objectWidthInRealWorldUnits * focalLength) / width;
+            //double spikeRight = distance >
+            return distance;
+        }
+
+
 
     }
-    public static double getDistance(double width){
-        double distance = (objectWidthInRealWorldUnits * focalLength) / width;
-        return distance;
-    }
+
 
 
 }
