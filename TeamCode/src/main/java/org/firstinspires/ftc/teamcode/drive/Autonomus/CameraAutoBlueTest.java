@@ -7,7 +7,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.opencv.core.*;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -18,9 +24,9 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name = "OpenCV Testing detects distance from red")
+@Autonomous(name = "OpenCV Testing detects distance from BLUE")
 
-public class CamerAutoTest extends LinearOpMode {
+public class CameraAutoBlueTest extends LinearOpMode {
 
     double cX = 0;
     double cY = 0;
@@ -56,7 +62,7 @@ public class CamerAutoTest extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         FtcDashboard.getInstance().startCameraStream(controlHubCam, 30);
 
-        YellowBlobDetectionPipeline yellowBlobDetectionPipeline = new YellowBlobDetectionPipeline();
+        BlueBlobDetectionPipeline blueBlobDetectionPipeline = new BlueBlobDetectionPipeline();
 
         leftFrontDrive  = hardwareMap.get(DcMotor .class, "leftFront");
         leftBackDrive  = hardwareMap.get(DcMotor.class, "leftRear");
@@ -70,17 +76,17 @@ public class CamerAutoTest extends LinearOpMode {
 
    while (opModeInInit()) {
        telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
-       telemetry.addData("Distance in Inch", (yellowBlobDetectionPipeline.getDistance(width)));
+       telemetry.addData("Distance in Inch", (blueBlobDetectionPipeline.getDistance(width)));
        telemetry.update();
 
 //pre initalization confrimation
-       if ((yellowBlobDetectionPipeline.getDistance(width) > spikeRight_MIN) && (yellowBlobDetectionPipeline.getDistance(width) < spikeRight_MAX)) {
+       if ((blueBlobDetectionPipeline.getDistance(width) > spikeRight_MIN) && (blueBlobDetectionPipeline.getDistance(width) < spikeRight_MAX)) {
            telemetry.addLine("i see the prop its on spike right ");
 
-       } else if ((yellowBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN) && (yellowBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX)) {
+       } else if ((blueBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN) && (blueBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX)) {
            telemetry.addLine("i see the prop its on spike middle ");
 
-       } else if (yellowBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && yellowBlobDetectionPipeline.getDistance(width) < 40) {
+       } else if (blueBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && blueBlobDetectionPipeline.getDistance(width) < 40) {
            telemetry.addLine("i dont see it so it must be spike left");
 
        }
@@ -102,12 +108,12 @@ public class CamerAutoTest extends LinearOpMode {
             while (opModeIsActive()) {
 
             telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
-            telemetry.addData("Distance in Inch", (yellowBlobDetectionPipeline.getDistance(width)));
+            telemetry.addData("Distance in Inch", (blueBlobDetectionPipeline.getDistance(width)));
             telemetry.addData(" actual width val: ", (width));
            // telemetry.addData("  val: ", (width));
 
 // spike right
-            if (yellowBlobDetectionPipeline.getDistance(width) > spikeRight_MIN && yellowBlobDetectionPipeline.getDistance(width) < spikeRight_MAX ){
+            if (blueBlobDetectionPipeline.getDistance(width) > spikeRight_MIN && blueBlobDetectionPipeline.getDistance(width) < spikeRight_MAX ){
                 telemetry.addLine("i see the prop its on spike right ");
                 telemetry.update();
 
@@ -126,7 +132,7 @@ public class CamerAutoTest extends LinearOpMode {
                 leftFrontDrive.setPower(0);
                 rightFrontDrive.setPower(0);
 // spike middle
-            } if (yellowBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN && yellowBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX ) {
+            } if (blueBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN && blueBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX ) {
                 telemetry.addLine("i see the prop its on spike middle 999999999999999");
                 telemetry.update();
         //strafe left
@@ -144,7 +150,7 @@ public class CamerAutoTest extends LinearOpMode {
                 rightFrontDrive.setPower(0);
             }
 // spike left && prop not found
-             if  (yellowBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && yellowBlobDetectionPipeline.getDistance(width) < 40 ){
+             if  (blueBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && blueBlobDetectionPipeline.getDistance(width) < 40 ){
                 telemetry.addLine("i dont see it so it must be spike left");
                 telemetry.update();
 
@@ -178,7 +184,7 @@ public class CamerAutoTest extends LinearOpMode {
         controlHubCam = OpenCvCameraFactory.getInstance().createWebcam(
                 hardwareMap.get(WebcamName.class, "webcam1"), cameraMonitorViewId);
 
-        controlHubCam.setPipeline(new YellowBlobDetectionPipeline());
+        controlHubCam.setPipeline(new BlueBlobDetectionPipeline());
 
         controlHubCam.openCameraDevice();
         controlHubCam.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
@@ -186,34 +192,34 @@ public class CamerAutoTest extends LinearOpMode {
 
 
 
-    class YellowBlobDetectionPipeline extends OpenCvPipeline {
+    class BlueBlobDetectionPipeline extends OpenCvPipeline {
 
 
         @Override
         public Mat processFrame(Mat input) {
             // Preprocess the frame to detect yellow regions
-            Mat yellowMask = preprocessFrame(input);
+            Mat blueMask = preprocessFrame(input);
 
             // Find contours of the detected yellow regions
             List<MatOfPoint> contours = new ArrayList<>();
             Mat hierarchy = new Mat();
-            Imgproc.findContours(yellowMask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+            Imgproc.findContours(blueMask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
             // Find the largest yellow contour (blob)
             MatOfPoint largestContour = findLargestContour(contours);
 
             if (largestContour != null) {
                 // Draw a red outline around the largest detected object
-                Imgproc.drawContours(input, contours, contours.indexOf(largestContour), new Scalar(255, 0, 0), 2);
+                Imgproc.drawContours(input, contours, contours.indexOf(largestContour), new Scalar(0, 0, 255), 2);
                 // Calculate the width of the bounding box
                 width = calculateWidth(largestContour);
 
                 // Display the width next to the label
                 String widthLabel = "Width: " + (int) width + " pixels";
-                Imgproc.putText(input, widthLabel, new Point(cX + 10, cY + 20), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+                Imgproc.putText(input, widthLabel, new Point(cX + 10, cY + 20), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 100), 2);
                 //Display the Distance
                 String distanceLabel = "Distance: " + String.format("%.2f", getDistance(width)) + " inches";
-                Imgproc.putText(input, distanceLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 0), 2);
+                Imgproc.putText(input, distanceLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 50), 2);
                 // Calculate the centroid of the largest contour
                 Moments moments = Imgproc.moments(largestContour);
                 cX = moments.get_m10() / moments.get_m00();
@@ -233,18 +239,18 @@ public class CamerAutoTest extends LinearOpMode {
             Mat hsvFrame = new Mat();
             Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_BGR2HSV);
 
-            Scalar lowerYellow = new Scalar(100, 100, 100);
-            Scalar upperYellow = new Scalar(180, 255, 255);
+            Scalar lowerBlue = new Scalar(0, 100, 100);
+            Scalar upperBlue = new Scalar(0, 255, 255);
 
 
-            Mat yellowMask = new Mat();
-            Core.inRange(hsvFrame, lowerYellow, upperYellow, yellowMask);
+            Mat blueMask = new Mat();
+            Core.inRange(hsvFrame, lowerBlue, upperBlue, blueMask);
 
             Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
-            Imgproc.morphologyEx(yellowMask, yellowMask, Imgproc.MORPH_OPEN, kernel);
-            Imgproc.morphologyEx(yellowMask, yellowMask, Imgproc.MORPH_CLOSE, kernel);
+            Imgproc.morphologyEx(blueMask, blueMask, Imgproc.MORPH_OPEN, kernel);
+            Imgproc.morphologyEx(blueMask, blueMask, Imgproc.MORPH_CLOSE, kernel);
 
-            return yellowMask;
+            return blueMask;
         }
 
         private MatOfPoint findLargestContour(List<MatOfPoint> contours) {
