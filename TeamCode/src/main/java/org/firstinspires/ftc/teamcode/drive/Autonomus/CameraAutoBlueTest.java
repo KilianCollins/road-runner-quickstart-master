@@ -49,7 +49,7 @@ public class CameraAutoBlueTest extends LinearOpMode {
     private static final int CAMERA_HEIGHT = 360; // height of wanted camera resolution
 
     // Calculate the distance using the formula
-    public static final double objectWidthInRealWorldUnits = 3.54331;  // Replace with the actual width of the object in real-world units
+    public static final double objectWidthInRealWorldUnits = 3.66142;  // Replace with the actual width of the object in real-world units
     public static final double focalLength = 728;  // Replace with the focal length of the camera in pixels
 
 
@@ -64,15 +64,61 @@ public class CameraAutoBlueTest extends LinearOpMode {
 
         BlueBlobDetectionPipeline blueBlobDetectionPipeline = new BlueBlobDetectionPipeline();
 
-        leftFrontDrive  = hardwareMap.get(DcMotor .class, "leftFront");
+        // Initialize the hardware variables. Note that the strings used here must correspond
+        // to the names assigned during the robot configuration step on the DS or RC devices.
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//drive
+        leftFrontDrive  = hardwareMap.get(DcMotor.class, "leftFront");
         leftBackDrive  = hardwareMap.get(DcMotor.class, "leftRear");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFront");
-         rightBackDrive = hardwareMap.get(DcMotor.class, "rightRear");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "rightRear");
+//jaws
+//        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+//        left_Intake_Servo_Jaw = hardwareMap.get(Servo.class, "leftIntakeServoJaws");
+//        right_Intake_Servo_Jaw = hardwareMap.get(Servo.class, "rightIntakeServoJaws");
 
+        //2 SERVOS
+//shoulder
+//        left_Shoulder_Motor = hardwareMap.get(DcMotor.class, "leftShoulderMotor");
+//        right_Shoulder_Motor = hardwareMap.get(DcMotor.class, "rightShoulderMotor");
+//  //elbow
+//         left_Elbow_Servo = hardwareMap.get(Servo.class, "elbowLeftServo");
+//         right_Elbow_Servo = hardwareMap.get(Servo.class, "elbowRightServo");
+        //wrist
+        // wrist_Right_Servo = hardwareMap.get(Servo.class, "wristRightServo");
+// //fingers
+//         finger_one_servo = hardwareMap.get(Servo.class, "fingerOne");
+//         finger_two_servo = hardwareMap.get(Servo.class, "fingerTwo");
+//         rocket_Launcher_servo = hardwareMap.get(Servo.class, "droneLauncher");
+////odometry
+//        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftRear"));// remane odo pods
+//        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront"));
+//        frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftFront"));
+
+
+        //elbow
+//        left_Elbow_Servo = hardwareMap.get(Servo.class, "elbowLeftServo");
+//        right_Elbow_Servo = hardwareMap.get(Servo.class, "elbowRightServo");
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // ########################################################################################
+        // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
+        // ########################################################################################
+        // Most robots need the motors on one side to be reversed to drive forward.
+        // The motor reversals shown here are for a "direct drive" robot (the wheels turn the same direction as the motor shaft)
+        // If your robot has additional gear reductions or uses a right-angled drive, it's important to ensure
+        // that your motors are turning in the correct direction.  So, start out with the reversals here, BUT
+        // when you first test your robot, push the left joystick forward and observe the direction the wheels turn.
+        // Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward
+        // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward
+        /*
+        dont need to delcare directions for servo  i think
+         */
+////////////////////////////////////////////////////////////////////////////////////
+        //drive
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 
    while (opModeInInit()) {
        telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
@@ -122,32 +168,13 @@ public class CameraAutoBlueTest extends LinearOpMode {
                // rightFrontDrive.setPower(0.5);
                 //back
             //strafe right
-                rightBackDrive.setPower(-0.5);
-                rightFrontDrive.setPower(0.5);
-                leftFrontDrive.setPower(-0.5);
-                leftBackDrive.setPower(0.5);
-                sleep(1800);
-                rightBackDrive.setPower(0);
-                leftBackDrive.setPower(0);
-                leftFrontDrive.setPower(0);
-                rightFrontDrive.setPower(0);
+
 // spike middle
             } if (blueBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN && blueBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX ) {
                 telemetry.addLine("i see the prop its on spike middle 999999999999999");
                 telemetry.update();
         //strafe left
-                rightBackDrive.setPower(0.5);
-                rightFrontDrive.setPower(-0.5);
 
-                leftFrontDrive.setPower(0.5);
-                leftBackDrive.setPower(-0.5);
-
-
-                sleep(1000);
-                rightBackDrive.setPower(0);
-                leftBackDrive.setPower(0);
-                leftFrontDrive.setPower(0);
-                rightFrontDrive.setPower(0);
             }
 // spike left && prop not found
              if  (blueBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && blueBlobDetectionPipeline.getDistance(width) < 40 ){
@@ -210,14 +237,14 @@ public class CameraAutoBlueTest extends LinearOpMode {
 
             if (largestContour != null) {
                 // Draw a red outline around the largest detected object
-                Imgproc.drawContours(input, contours, contours.indexOf(largestContour), new Scalar(0, 0, 255), 2);
+                Imgproc.drawContours(input, contours, contours.indexOf(largestContour), new Scalar(240, 0, 0), 2);
                 // Calculate the width of the bounding box
                 width = calculateWidth(largestContour);
 
                 // Display the width next to the label
                 String widthLabel = "Width: " + (int) width + " pixels";
                 Imgproc.putText(input, widthLabel, new Point(cX + 10, cY + 20), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 100), 2);
-                //Display the Distance
+                //Display the Distance                                                                                                  i want green text, read somewhere that cv uses BGR
                 String distanceLabel = "Distance: " + String.format("%.2f", getDistance(width)) + " inches";
                 Imgproc.putText(input, distanceLabel, new Point(cX + 10, cY + 60), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, new Scalar(0, 255, 50), 2);
                 // Calculate the centroid of the largest contour
@@ -237,10 +264,25 @@ public class CameraAutoBlueTest extends LinearOpMode {
 
         private Mat preprocessFrame(Mat frame) {
             Mat hsvFrame = new Mat();
-            Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_BGR2HSV);
+            Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_RGB2HSV); // was COLOR_BRG2HSV i chnaged the color space and it worked some how
+                                    // for OpenCv HSV Color Space
+            /*
+                    these scalar values are converted from BGR to HSV (Blue, Green, Red) (Hue,Saturation, Value)
 
-            Scalar lowerBlue = new Scalar(0, 100, 100);
-            Scalar upperBlue = new Scalar(0, 255, 255);
+                    why use HSV? HSV checks for values the camera is actually built to see, humans uses the bgr but cameras are better at hsv
+                    so using the hsv color space allows you to get a more accurate and consistent detection from the software to the camera
+         need to detect more than just red?
+
+         1.go to any hsv color picker website i.e. : https://colorpicker.me/#0081ff
+         2.find a color that is pretty close to what you want to detect
+         3. enter a range of values that's pretty broad for each,
+            this is the HSV vals for a bright alliance marker red.
+                EX: Scalar lowerYellow = new Scalar(100, 100, 100);// hue, saturation, value **below statment is equal to this
+                    Scalar upperYellow = new Scalar(180, 255, 255);// color, greyness, brightness ** above statment is equal to this
+
+             */
+            Scalar lowerBlue = new Scalar(100, 100, 100);// Scalar(hue, saturation, value of the color(BRIGHTNESS)
+            Scalar upperBlue = new Scalar(180, 255, 255);// in open cv hue == color, saturation == greyness, value == brightness
 
 
             Mat blueMask = new Mat();
