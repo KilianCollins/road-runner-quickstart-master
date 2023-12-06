@@ -68,6 +68,8 @@ import org.firstinspires.ftc.teamcode.util.Encoder;
 
 @TeleOp(group="drive")
 //@Disabled
+
+// the current teleop
 public class LeaugeOneTeleOpNoRocket extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
@@ -77,12 +79,20 @@ public class LeaugeOneTeleOpNoRocket extends LinearOpMode {
 ///////////////////////////////////////////////////////////////
     private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive = null;
 //jaws
-    private  DcMotor intakeMotor = null;
-    private Servo right_Intake_Servo_Jaw, left_Intake_Servo_Jaw = null;
+
+    //intakeMotor commented out for League2
+//    private  DcMotor intakeMotor = null;
+    private Servo left_Intake_Servo_Jaw = null; //right_Intake_Servo_Jaw
 //shoulder
     private DcMotor left_Shoulder_Motor, right_Shoulder_Motor = null;
 //elbow
-    private Servo left_Elbow_Servo, right_Elbow_Servo, finger_one_servo, finger_two_servo, wrist_Right_Servo, wrist_Left_Servo, rocket_Launcher_servo  = null;
+    private Servo left_Elbow_Servo,
+        right_Elbow_Servo,
+        finger_one_servo,
+        finger_two_servo,
+        wrist_Right_Servo,
+        wrist_Left_Servo,
+        rocket_Launcher_servo  = null;
 //wrist
 
     private Encoder leftEncoder = null;
@@ -90,10 +100,16 @@ public class LeaugeOneTeleOpNoRocket extends LinearOpMode {
     private Encoder frontEncoder = null;
 
     //537.7 for 312
-    private int  low_shoulder = -4000;// which directon for right sholder motor rotate??
-    private int sleep_shoulder_pos = -100; // all the wa down
+    private int shoulder_scoring = -2900;// which directon for right sholder motor rotate??
+    private int sleep_shoulder_pos = 80; // all the wa down
 
+//end game
+    private int hanging_pos_down = 1000;
 
+    private int waiting_to_launch = -100;
+    private int raise_to_launch = -2500;
+
+//teleop
     private double low_elbow = 1;
     private double shoulder_power = 0.75;
 
@@ -115,22 +131,22 @@ public class LeaugeOneTeleOpNoRocket extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFront");
         rightBackDrive = hardwareMap.get(DcMotor.class, "rightRear");
 //jaws
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-        left_Intake_Servo_Jaw = hardwareMap.get(Servo.class, "leftIntakeServoJaws");
-        right_Intake_Servo_Jaw = hardwareMap.get(Servo.class, "rightIntakeServoJaws");
+        //intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+    //    left_Intake_Servo_Jaw = hardwareMap.get(Servo.class, "leftIntakeServoJaws");
+    //    right_Intake_Servo_Jaw = hardwareMap.get(Servo.class, "rightIntakeServoJaws");
 
-        //2 SERVOS
+
 //shoulder
-        left_Shoulder_Motor = hardwareMap.get(DcMotor.class, "leftShoulderMotor");
-        right_Shoulder_Motor = hardwareMap.get(DcMotor.class, "rightShoulderMotor");
+        left_Shoulder_Motor = hardwareMap.get(DcMotor.class, "leftShoulderMotor");// this is actually the right motor
+        right_Shoulder_Motor = hardwareMap.get(DcMotor.class, "rightShoulderMotor");// left motor config reversed
   //elbow
          left_Elbow_Servo = hardwareMap.get(Servo.class, "elbowLeftServo");
-         right_Elbow_Servo = hardwareMap.get(Servo.class, "elbowRightServo");
+        // right_Elbow_Servo = hardwareMap.get(Servo.class, "elbowRightServo");
  //wrist
-         wrist_Right_Servo = hardwareMap.get(Servo.class, "wristRightServo");
+     //    wrist_Right_Servo = hardwareMap.get(Servo.class, "wristRightServo");
  //fingers
-         finger_one_servo = hardwareMap.get(Servo.class, "fingerOne");
-         finger_two_servo = hardwareMap.get(Servo.class, "fingerTwo");
+    //     finger_one_servo = hardwareMap.get(Servo.class, "fingerOne");
+    //     finger_two_servo = hardwareMap.get(Servo.class, "fingerTwo");
          rocket_Launcher_servo = hardwareMap.get(Servo.class, "droneLauncher");
 //odometry
         leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftRear"));// // NEEW  port
@@ -168,20 +184,20 @@ public class LeaugeOneTeleOpNoRocket extends LinearOpMode {
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 
         //jaws
-        left_Intake_Servo_Jaw.setDirection(Servo.Direction.REVERSE);
-        intakeMotor.setDirection(DcMotor.Direction.REVERSE);
+     //   left_Intake_Servo_Jaw.setDirection(Servo.Direction.REVERSE);
+       // intakeMotor.setDirection(DcMotor.Direction.REVERSE);
         //shoulder
         left_Shoulder_Motor.setDirection(DcMotor.Direction.FORWARD);
         right_Shoulder_Motor.setDirection(DcMotor.Direction.FORWARD);
         //elbow
         left_Elbow_Servo.setDirection(Servo.Direction.REVERSE);
         //wrist
-        wrist_Right_Servo.setDirection(Servo.Direction.FORWARD);
+     //   wrist_Right_Servo.setDirection(Servo.Direction.FORWARD);
         //fingers
-        finger_two_servo.setDirection(Servo.Direction.FORWARD);
-        finger_one_servo.setDirection(Servo.Direction.FORWARD);
+     //   finger_two_servo.setDirection(Servo.Direction.FORWARD);
+     //   finger_one_servo.setDirection(Servo.Direction.FORWARD);
         //dl
-        rocket_Launcher_servo.setDirection(Servo.Direction.FORWARD);
+        rocket_Launcher_servo.setDirection(Servo.Direction.REVERSE);
 
 
 
@@ -204,7 +220,7 @@ public class LeaugeOneTeleOpNoRocket extends LinearOpMode {
             double axial   = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
             double lateral =  gamepad1.left_stick_x;
             double yaw     =  gamepad1.right_stick_x;
-            double intake = gamepad1.left_trigger;
+           // double intake  = gamepad1.left_trigger;
 
 
            // double shoulder_test = gamepad2.left_trigger;
@@ -318,26 +334,26 @@ needs intake reverse button 10/8/23 --kilian
 //
 //          }
 ////////////////////////// G1
-        if (gamepad1.y){// intake up
-            left_Intake_Servo_Jaw.scaleRange(0, 1);// min, max "min has to be larger than max"
-            left_Intake_Servo_Jaw.setPosition(0.7);
+       // if (gamepad1.y){// intake up
+       //     left_Intake_Servo_Jaw.scaleRange(0, 1);// min, max "min has to be larger than max"
+       //     left_Intake_Servo_Jaw.setPosition(0.7);
 
-            right_Intake_Servo_Jaw.scaleRange(0, 1);
-            right_Intake_Servo_Jaw.setPosition(0.7);
+       //     right_Intake_Servo_Jaw.scaleRange(0, 1);
+       //     right_Intake_Servo_Jaw.setPosition(0.7);
 
-            intakeMotor.setPower(0);
+        //    intakeMotor.setPower(0);
 
-        }
-        if (gamepad1.a){// intake down
-            left_Intake_Servo_Jaw.scaleRange(0, 1);// min, max "min has to be larger than max"
-            left_Intake_Servo_Jaw.setPosition(0);
+      //  }
+      //  if (gamepad1.a){// intake down
+         //   left_Intake_Servo_Jaw.scaleRange(0, 1);// min, max "min has to be larger than max"
+         //   left_Intake_Servo_Jaw.setPosition(0);
 
-            right_Intake_Servo_Jaw.scaleRange(0, 1);
-            right_Intake_Servo_Jaw.setPosition(0);
+        //    right_Intake_Servo_Jaw.scaleRange(0, 1);
+        //    right_Intake_Servo_Jaw.setPosition(0);
 
-            intakeMotor.setPower(0.9);
+        //    intakeMotor.setPower(0.9);
 
-        }
+       // }
         /*
         need to define what, in code, each button does, not just up and out or down, more description
         w3DFFGBN  BV FDD
@@ -372,49 +388,121 @@ needs intake reverse button 10/8/23 --kilian
 //
 //            }
 //////////////////////// G2
-        if (gamepad2.y){// up 1
+//////g2 elbow //////////////
+        if (gamepad2.y){ //135 past shoulder
+            // up 1
             left_Elbow_Servo.scaleRange(0, 1);
             left_Elbow_Servo.setPosition(0.82);
-
-            right_Elbow_Servo.scaleRange(0,1);
-            right_Elbow_Servo.setPosition(0.82);
-
         }
-        if (gamepad2.x){// down 0
+
+        if (gamepad2.x){// down 0, towards chassie also
             left_Elbow_Servo.scaleRange(0, 1);
             left_Elbow_Servo.setPosition(0);
-
-            right_Elbow_Servo.scaleRange(0,1);
-            right_Elbow_Servo.setPosition(0);
-    ////////////////////////////////////////////
         }
-        if(gamepad2.a){// up 1 wrist spit pix out
-            wrist_Right_Servo.scaleRange(0,1);
-            wrist_Right_Servo.setPosition(0.3);
+ ////////TESTING SHOULDER//////////////////TESTING SHOULDER//////////////////TESTING SHOULDER///////////////////////
+//            if (gamepad2.dpad_up){// left up
+//                left_Shoulder_Motor.setTargetPosition(-2900);
+//                left_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                left_Shoulder_Motor.setPower(0.5);
+//
+//            }
+//
+//            if (gamepad2.dpad_down){ //right up
 
+//            right_Shoulder_Motor.setTargetPosition(shoulder_scoring);
+//            right_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            right_Shoulder_Motor.setPower(0.5);
+//
+//            }
+//
+//            if (gamepad2.dpad_left){// left sleep pos
+//                left_Shoulder_Motor.setTargetPosition(80);
+//                left_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                left_Shoulder_Motor.setPower(0.5);
+//
+//            }
+//
+//            if (gamepad2.dpad_right){// right sleep pos
+//                right_Shoulder_Motor.setTargetPosition(80);
+//                right_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                right_Shoulder_Motor.setPower(0.5);
+//
+//            }
+
+///////TESTING SHOULDER//////\/\/\//////////TESTING SHOULDER///////\/\/\///////////TESTING SHOULDER/////////\/\/\/\/\////////////TESTING SHOULDER/\/\/\
+////g2 Shoulder motor right
+            if (gamepad2.dpad_up){// up
+                left_Shoulder_Motor.setTargetPosition(shoulder_scoring);
+                left_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                left_Shoulder_Motor.setPower(0.5);
+
+                right_Shoulder_Motor.setTargetPosition(shoulder_scoring);
+                right_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                right_Shoulder_Motor.setPower(0.5);
+
+            }
+//
+            if (gamepad2.dpad_down){ // down
+                left_Shoulder_Motor.setTargetPosition(sleep_shoulder_pos);
+                left_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                left_Shoulder_Motor.setPower(0.5);
+
+                right_Shoulder_Motor.setTargetPosition(80);
+                right_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                right_Shoulder_Motor.setPower(0.5);
+
+            }
+////////////G1//////////////////////////////////////////////////////
+
+            if (gamepad1.y){
+            rocket_Launcher_servo.scaleRange(0, 1);
+            rocket_Launcher_servo.setPosition(0.5);
 
         }
-
-        if (gamepad2.b){// down 0 wrist accept pix
-            wrist_Right_Servo.scaleRange(0,1);
-            wrist_Right_Servo.setPosition(0);
-
-        }
-
-        if (gamepad2.dpad_up){// whole arm up to 45 degrees irl
-            right_Shoulder_Motor.setTargetPosition(low_shoulder);
-            right_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            right_Shoulder_Motor.setPower(0.5);
-
+        if(gamepad1.a){
+            rocket_Launcher_servo.scaleRange(0, 1);
+            rocket_Launcher_servo.setPosition(0);
 
         }
-        if (gamepad2.dpad_down){ //whole arm down to chasie
-            right_Shoulder_Motor.setTargetPosition(sleep_shoulder_pos);
-            right_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            right_Shoulder_Motor.setPower(0.5);
+//////dr laucnehr aimer
+
+//            if (gamepad2.dpad_right){//whole arm down to chasie crunch for hanging 12/1/23
+//                left_Shoulder_Motor.setTargetPosition(hanging_pos_down);
+//                left_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                left_Shoulder_Motor.setPower(0.5);
+//
+//            }
+
+       if (gamepad1.b){ // raise the drone laucnher
+           right_Shoulder_Motor.setTargetPosition(waiting_to_launch); // 800
+           right_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+           right_Shoulder_Motor.setPower(0.5);
+
+       }
+       if (gamepad1.x){// sleepmode drone launcher
+           right_Shoulder_Motor.setTargetPosition(raise_to_launch); //-1500
+           right_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+           right_Shoulder_Motor.setPower(0.5);
+
+       }
+
+//////////////////////// G!
+
+ //       if(gamepad2.a){// up 1 wrist spit pix out
+      //      wrist_Right_Servo.scaleRange(0,1);
+      //      wrist_Right_Servo.setPosition(0.3);
 
 
-        }
+//        }
+
+ //       if (gamepad2.b){// down 0 wrist accept pix
+      //      wrist_Right_Servo.scaleRange(0,1);
+      //      wrist_Right_Servo.setPosition(0);
+
+        //}
+
+
+
 
 //        float leftTriggerData = gamepad2.left_trigger;
 //
@@ -492,12 +580,12 @@ needs intake reverse button 10/8/23 --kilian
 
 
 
-            /*
-            leftFrontPower  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
-            leftBackPower   = gamepad1.a ? 1.0 : 0.0;  // A gamepad
-            rightFrontPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
-            rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
-            */
+//
+//            leftFrontPower  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
+//            leftBackPower   = gamepad1.a ? 1.0 : 0.0;  // A gamepad
+//            rightFrontPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
+//            rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
+
 
 
             // Send calculated power to wheels
@@ -505,7 +593,7 @@ needs intake reverse button 10/8/23 --kilian
             rightFrontDrive.setPower(rightFrontPower);
             leftBackDrive.setPower(leftBackPower);
             rightBackDrive.setPower(rightBackPower);
-            intakeMotor.setPower(intake);
+            //intakeMotor.setPower(intake);
 
 
 
@@ -517,15 +605,15 @@ needs intake reverse button 10/8/23 --kilian
 
 
 
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
-            telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
-          //  telemetry.addData("l: , r: , b: ", "%4.2f, %4.2f, %4.2f", leftEncoder.getCurrentPosition(),rightEncoder.getCurrentPosition(),frontEncoder.getCurrentPosition());
-           // telemetry.addData("arm pos, l: , r: ", "%4.2f, %4.2f",  left_Shoulder_Motor.getCurrentPosition(), right_Shoulder_Motor.getCurrentPosition());
-
-          //  telemetry.addData("shoulder  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
-            telemetry.update();
+             // Show the elapsed game time and wheel power.
+//            telemetry.addData("Status", "Run Time: " + runtime.toString());
+//            telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
+//            telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+//            telemetry.addData("l: , r: , b: ", "%4.2f, %4.2f, %4.2f", leftEncoder.getCurrentPosition(),rightEncoder.getCurrentPosition(),frontEncoder.getCurrentPosition());
+//            telemetry.addData("arm pos, l: , r: ", "%4.2f, %4.2f",  left_Shoulder_Motor.getCurrentPosition(), right_Shoulder_Motor.getCurrentPosition());
+//
+//            telemetry.addData("shoulder  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+//            telemetry.update();
         }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }

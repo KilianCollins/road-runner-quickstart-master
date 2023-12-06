@@ -112,6 +112,9 @@ public class TESTELL extends LinearOpMode {
         leftBackDrive  = hardwareMap.get(DcMotor.class, "leftRear");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFront");
         rightBackDrive = hardwareMap.get(DcMotor.class, "rightRear");
+
+        right_Elbow_Servo = hardwareMap.get(Servo.class, "elbowRightServo");
+        //left_Elbow_Servo =  hardwareMap.get(Servo.class,"")
 //jaws
 //        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 //        left_Intake_Servo_Jaw = hardwareMap.get(Servo.class, "leftIntakeServoJaws");
@@ -346,27 +349,28 @@ needs intake reverse button 10/8/23 --kilian
 //
 //            }
 //////////////////////// G2
-        if (gamepad2.y){// up 1
-            left_Elbow_Servo.scaleRange(0, 1);
-            left_Elbow_Servo.setPosition(0.8);
-
-
-        }if (gamepad2.a){
-                left_Elbow_Servo.scaleRange(0, 1);
-                left_Elbow_Servo.setPosition(0);
-            }
+//        if (gamepad2.y){// up 1
+//            left_Elbow_Servo.scaleRange(0, 1);
+//            left_Elbow_Servo.setPosition(0.8);
+//
+//
+//        }
+//
+//
+//        if (gamepad2.a){
+//                left_Elbow_Servo.scaleRange(0, 1);
+//                left_Elbow_Servo.setPosition(0);
+//            }
 
 
         if (gamepad2.x){// right elbow 1
-
-
             right_Elbow_Servo.scaleRange(0,1);
             right_Elbow_Servo.setPosition(0);
     ////////////////////////////////////////////
         }
         if (gamepad2.b){// right elbow 0
             right_Elbow_Servo.scaleRange(0,1);
-            right_Elbow_Servo.setPosition(0.8);
+            right_Elbow_Servo.setPosition(1  );
         }
 //        if(gamepad2.a){// up 1 wrist
 //            wrist_Right_Servo.scaleRange(0,1);
