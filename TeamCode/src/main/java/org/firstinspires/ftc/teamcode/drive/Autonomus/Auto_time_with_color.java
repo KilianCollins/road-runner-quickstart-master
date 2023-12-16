@@ -5,10 +5,17 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.util.Encoder;
-import org.opencv.core.*;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -19,13 +26,15 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name = "OpenCV Testing detects distance from red")
+@Autonomous(name = "atem   4444 2whele odo")
 
-public class CamerAutoTest extends LinearOpMode {
+public class Auto_time_with_color extends LinearOpMode {
 
     double cX = 0;
     double cY = 0;
     double width = 0;
+
+
 
     double spikeRight_MIN = 20.0;
     double spikeRight_MAX = 23.0;
@@ -35,9 +44,14 @@ public class CamerAutoTest extends LinearOpMode {
 
     double spike_OUT_OF_BOUNDS = 35.00;
 
+    double wheels_on = 0.5;
+    double wheels_off = 0;
+
     private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive = null;
 
     private Encoder leftEncoder, rightEncoder = null;
+    double inital_left_pos, inital_right_pos;
+
 
 
     //drive
@@ -73,10 +87,10 @@ public class CamerAutoTest extends LinearOpMode {
         leftFrontDrive  = hardwareMap.get(DcMotor .class, "leftFront");
         leftBackDrive  = hardwareMap.get(DcMotor.class, "leftRear");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFront");
-         rightBackDrive = hardwareMap.get(DcMotor.class, "rightRear");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "rightRear");
 
-         leftEncoder = hardwareMap.get(Encoder.class, "frontLeftODO");
-         rightEncoder = hardwareMap.get(Encoder.class, "frontRightODO");
+        leftEncoder = hardwareMap.get(Encoder.class, "frontLeftODO");
+        rightEncoder = hardwareMap.get(Encoder.class, "frontRightODO");
         // backEncoder = hardwareMap.get(Encoder.class, "backODO");
 
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -84,24 +98,29 @@ public class CamerAutoTest extends LinearOpMode {
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
 
-   while (opModeInInit()) {
-       telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
-       telemetry.addData("Distance in Inch", (yellowBlobDetectionPipeline.getDistance(width)));
-       telemetry.update();
+        while (opModeInInit()) {
+            telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
+            telemetry.addData("Distance in Inch", (yellowBlobDetectionPipeline.getDistance(width)));
+            telemetry.update();
 
 //pre initalization confrimation
-       if ((yellowBlobDetectionPipeline.getDistance(width) > spikeRight_MIN) && (yellowBlobDetectionPipeline.getDistance(width) < spikeRight_MAX)) {
-           telemetry.addLine("i see the prop its on spike right ");
 
-       } else if ((yellowBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN) && (yellowBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX)) {
-           telemetry.addLine("i see the prop its on spike middle ");
+            inital_left_pos =   leftEncoder.getCurrentPosition();
+            inital_right_pos = rightEncoder.getCurrentPosition();
 
-       } else if (yellowBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && yellowBlobDetectionPipeline.getDistance(width) < 40) {
-           telemetry.addLine("i dont see it so it must be spike left");
 
-       }
-       continue;
-   }
+            if ((yellowBlobDetectionPipeline.getDistance(width) > spikeRight_MIN) && (yellowBlobDetectionPipeline.getDistance(width) < spikeRight_MAX)) {
+                telemetry.addLine("i see the prop its on spike right ");
+
+            } else if ((yellowBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN) && (yellowBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX)) {
+                telemetry.addLine("i see the prop its on spike middle ");
+
+            } else if (yellowBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && yellowBlobDetectionPipeline.getDistance(width) < 40) {
+                telemetry.addLine("i dont see it so it must be spike left");
+
+            }
+            continue;
+        }
 
 
         waitForStart();
@@ -115,54 +134,126 @@ public class CamerAutoTest extends LinearOpMode {
 
 
 
-            while (opModeIsActive()) {
+        while (opModeIsActive()) {
 
             telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
             telemetry.addData("Distance in Inch", (yellowBlobDetectionPipeline.getDistance(width)));
             telemetry.addData(" actual width val: ", (width));
-           // telemetry.addData("  val: ", (width));
+            // telemetry.addData("  val: ", (width));
 
 // spike right
             if (yellowBlobDetectionPipeline.getDistance(width) > spikeRight_MIN && yellowBlobDetectionPipeline.getDistance(width) < spikeRight_MAX ){
                 telemetry.addLine("i see the prop its on spike right ");
                 telemetry.update();
-            //strafe right
+                // forwards stop back
+                //forwards
+
+    /*forwards*/ while ((linearBotPosition_left() < 34) && (linearBotPosition_Right()< 34.50)) { //probably in inches, while left wheel
+                    rightBackDrive.setPower(0.5);
+                    rightFrontDrive.setPower(0.5);
+
+                    leftFrontDrive.setPower(0.5);
+                    leftBackDrive.setPower(0.5);
+
+                    telemetry.addData("current posleft: ", "current pos right: ", linearBotPosition_left(), linearBotPosition_Right());
+
+/*forwards pos check*/  if ((linearBotPosition_left() >= 34) && (linearBotPosition_Right()>= 34)){
+
+                        rightBackDrive.setPower(0);
+                        rightFrontDrive.setPower(0);
+
+                        leftFrontDrive.setPower(0);
+                        leftBackDrive.setPower(0);
+                        sleep(700);
+                        //break; //i want this to break the spike specific loop but stay inside of the run opModeloop()
+                        break;
+                    }else{
+    //ICE
+                        rightBackDrive.setPower(0);
+                        rightFrontDrive.setPower(0);
+
+                        leftFrontDrive.setPower(0);
+                        leftBackDrive.setPower(0);
+                        telemetry.addData(" error cant find self last recored pos left: ", "right: ", linearBotPosition_left(), linearBotPosition_Right());
+                        break;
+                    }
+                }
 
 
+                //drive forwards stop drive back
 
-
+                //dirve
+//                double forward_left_stick = -0.5; //im mimicking the gpad infput numberwise
+//                double backward_left_stick =  0.5;
+//                double rotate_le
+//                   //   -1_-0.5__0__+0.5_+1             // left stick forward irl returns neg value
+//
+//
+//                double axial_forwards = forward_left_stick;//y axis  // Note: pushing stick forward gives negative value
+//                double lateral =  gamepad1.left_stick_x; //x axis
+//                double yaw     =  gamepad1.right_stick_x; //left axis
+//
+//                double leftFrontPower  = axial_forwards + lateral + yaw;
+//                double rightFrontPower = axial_forwards - lateral - yaw;
+//                double leftBackPower   = axial_forwards - lateral + yaw;
+//                double rightBackPower  = axial_forwards + lateral - yaw;
 
 
 
 // spike middle
-            } if (yellowBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN && yellowBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX ) {
-                telemetry.addLine("i see the prop its on spike middle 999999999999999");
+            }
+// Spike Middle
+            if (yellowBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN && yellowBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX ) {
+                telemetry.addLine("i see the prop its on spike middle ");
                 telemetry.update();
 
+        //forwards
+                while((linearBotPosition_left() < 34) && (linearBotPosition_Right() < 34.5)){
+                    rightBackDrive.setPower(wheels_on); // 0.5 power
+                    leftBackDrive.setPower(wheels_on);
+                    leftFrontDrive.setPower(wheels_on);
+                    rightFrontDrive.setPower(wheels_on);
 
-        //strafe left
-                rightBackDrive.setPower(0.5);
-                rightFrontDrive.setPower(-0.5);
+                    //checks for enpos
+                    if ((linearBotPosition_left() >= 34)&& (linearBotPosition_Right()>= 34.5)){
 
-                leftFrontDrive.setPower(0.5);
-                leftBackDrive.setPower(-0.5);
+                        rightBackDrive.setPower(wheels_off); //0 power
+                        leftBackDrive.setPower(wheels_off);
+                        leftFrontDrive.setPower(wheels_off);
+                        rightFrontDrive.setPower(wheels_off);
+                        break;
+                    }else{
+            //ICE
+                        rightBackDrive.setPower(0);
+                        rightFrontDrive.setPower(0);
+
+                        leftFrontDrive.setPower(0);
+                        leftBackDrive.setPower(0);
+                        telemetry.addData(" error cant find self last recored pos left: ", "right: ", linearBotPosition_left(), linearBotPosition_Right());
+                        break;
+                    }
+                }
+        // back up to inch from  wall
 
 
-                sleep(1000);
-                rightBackDrive.setPower(0);
-                leftBackDrive.setPower(0);
-                leftFrontDrive.setPower(0);
-                rightFrontDrive.setPower(0);
+        // turn left
+
+        // drive to back stage
+
+
+
+
 
 
             }
 // spike left && prop not found
-             if  (yellowBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && yellowBlobDetectionPipeline.getDistance(width) < 40 ){
+            if  (yellowBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && yellowBlobDetectionPipeline.getDistance(width) < 40 ){
+                telemetry.update();
                 telemetry.addLine("i dont see it so it must be spike left");
                 telemetry.update();
 
-                 //leftFrontDrive.setPower(-0.5);
-               // rightFrontDrive.setPower(-0.5);
+                //leftFrontDrive.setPower(-0.5);
+                // rightFrontDrive.setPower(-0.5);
                 //back
 //                rightBackDrive.setPower(0.5);
 //                leftBackDrive.setPower(-0.5);
@@ -171,21 +262,12 @@ public class CamerAutoTest extends LinearOpMode {
 //                leftBackDrive.setPower(0);
 
             }
-                telemetry.update();
+            telemetry.update();
 
 
-                //
-//                rightBackDrive.setPower(-0.5);
-//                rightFrontDrive.setPower(0.5);
-//                leftFrontDrive.setPower(-0.5);
-//                leftBackDrive.setPower(0.5);
-//                sleep(1800);
-//                rightBackDrive.setPower(0);
-//                leftBackDrive.setPower(0);
-//                leftFrontDrive.setPower(0);
-//                rightFrontDrive.setPower(0);
+            //
 
-                // The OpenCV pipeline automatically processes frames and handles detection
+            // The OpenCV pipeline automatically processes frames and handles detection
         }
 
         // Release resources
@@ -299,6 +381,57 @@ public class CamerAutoTest extends LinearOpMode {
 
 
     }
+
+    private double linearBotPosition_left(){
+        double current_left = leftEncoder.getCurrentPosition();
+
+        double WHEEL_RADIUS_ODO = 0.66;
+        double inches_moved_left =0;
+
+        double CIRCUMFRANCE_OF_ODO = 4.14690;
+        double rev_ticks = 8192;
+
+
+       // CIRCUMFRANCE_OF_ODO = ((  2.0 *WHEEL_RADIUS_ODO) * Math.PI); // does not convert to inches missnamed// fixed
+        //           [x_0]                [delta_x]
+        //xfinal ==  [y_0]       +        [delta_y]
+        //           [0_0//placeholder]   [placeholder]
+        inches_moved_left = ((inital_left_pos / rev_ticks)   + (current_left/rev_ticks)) * CIRCUMFRANCE_OF_ODO; // corected calculation
+
+
+        return inches_moved_left;
+        //return inches_moved_right;
+    }
+    private double linearBotPosition_Right(){
+        double current_right = rightEncoder.getCurrentPosition();
+
+        double WHEEL_RADIUS_ODO = 0.66;
+        double inches_moved_right =0;
+
+        double CIRCUMFRANCE_OF_ODO = 4.14690;
+        double rev_ticks = 8192;
+
+        // auto_seconds_since_start = clock.seconds();
+
+        //CIRCUMFRANCE_OF_ODO = ((  2.0 *WHEEL_RADIUS_ODO) * Math.PI); // does not convert to inches missnamed
+        //           [x_0]                [delta_x]
+        //xfinal ==  [y_0]       +        [delta_y]
+        //           [0_0//placeholder]   [placeholder]
+        inches_moved_right = ((inital_right_pos / rev_ticks) + (current_right/rev_ticks)) * CIRCUMFRANCE_OF_ODO;
+        // hopefully this formula should calculate only the linear change in distance and not the angular distance
+        // the formula assumes that inital distance recorded is zero,
+        // assumes the equivilence of rev_ticks to CIRCUMFRANCE_OF_ODO
+        // which by probalably puts the product in inches
+
+
+        // next have this calculate a safe have rev range for simplicity of while contions and check satments
+        // ie calculate have rev margin of error 
+
+        return inches_moved_right;
+
+
+    }
+
 
 
 

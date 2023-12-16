@@ -8,7 +8,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.util.Encoder;
-import org.opencv.core.*;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -19,13 +25,15 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name = "OpenCV Testing detects distance from red")
+@Autonomous(name = "atempt at 2whele odo")
 
-public class CamerAutoTest extends LinearOpMode {
+public class AutoNonHoloDrive extends LinearOpMode {
 
     double cX = 0;
     double cY = 0;
     double width = 0;
+
+
 
     double spikeRight_MIN = 20.0;
     double spikeRight_MAX = 23.0;
@@ -38,6 +46,8 @@ public class CamerAutoTest extends LinearOpMode {
     private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive = null;
 
     private Encoder leftEncoder, rightEncoder = null;
+    double inital_left_pos, inital_right_pos;
+
 
 
     //drive
@@ -90,6 +100,11 @@ public class CamerAutoTest extends LinearOpMode {
        telemetry.update();
 
 //pre initalization confrimation
+
+       inital_left_pos =   leftEncoder.getCurrentPosition();
+       inital_right_pos = rightEncoder.getCurrentPosition();
+
+
        if ((yellowBlobDetectionPipeline.getDistance(width) > spikeRight_MIN) && (yellowBlobDetectionPipeline.getDistance(width) < spikeRight_MAX)) {
            telemetry.addLine("i see the prop its on spike right ");
 
@@ -126,11 +141,58 @@ public class CamerAutoTest extends LinearOpMode {
             if (yellowBlobDetectionPipeline.getDistance(width) > spikeRight_MIN && yellowBlobDetectionPipeline.getDistance(width) < spikeRight_MAX ){
                 telemetry.addLine("i see the prop its on spike right ");
                 telemetry.update();
-            //strafe right
+                // forwards stop back
+            //forwards
+                double left_odo_pos = leftEncoder.getCurrentPosition();
+                double right_odo_pos = rightEncoder.getCurrentPosition();
+
+        /*forwards*/ while ( (left_odo_pos < 40_000) && (right_odo_pos <40_000) ) {
+                        rightBackDrive.setPower(0.5);
+                        rightFrontDrive.setPower(0.5);
+
+                        leftFrontDrive.setPower(0.5);
+                        leftBackDrive.setPower(0.5);
+
+                        left_odo_pos += leftEncoder.getCurrentPosition();
+                        right_odo_pos += rightEncoder.getCurrentPosition();
+                        telemetry.addData("current pos %.2f", linearBotPosition_left() );
+
+    /*forwards pos check*/  if ( ( (left_odo_pos > 41_000)&&(right_odo_pos > 41_000) ) ){
+                            left_odo_pos += leftEncoder.getCurrentPosition();
+                            right_odo_pos += rightEncoder.getCurrentPosition();
+                            rightBackDrive.setPower(0);
+                            rightFrontDrive.setPower(0);
+
+                            leftFrontDrive.setPower(0);
+                            leftBackDrive.setPower(0);
+                            sleep(700);
+                            //break; //i want this to break the spike specific loop but stay inside of the run opModeloop()
+
+                        }
+
+
+                    }
 
 
 
 
+            //drive forwards stop drive back
+
+        //dirve
+//                double forward_left_stick = -0.5; //im mimicking the gpad infput numberwise
+//                double backward_left_stick =  0.5;
+//                double rotate_le
+//                   //   -1_-0.5__0__+0.5_+1             // left stick forward irl returns neg value
+//
+//
+//                double axial_forwards = forward_left_stick;//y axis  // Note: pushing stick forward gives negative value
+//                double lateral =  gamepad1.left_stick_x; //x axis
+//                double yaw     =  gamepad1.right_stick_x; //left axis
+//
+//                double leftFrontPower  = axial_forwards + lateral + yaw;
+//                double rightFrontPower = axial_forwards - lateral - yaw;
+//                double leftBackPower   = axial_forwards - lateral + yaw;
+//                double rightBackPower  = axial_forwards + lateral - yaw;
 
 
 
@@ -175,15 +237,6 @@ public class CamerAutoTest extends LinearOpMode {
 
 
                 //
-//                rightBackDrive.setPower(-0.5);
-//                rightFrontDrive.setPower(0.5);
-//                leftFrontDrive.setPower(-0.5);
-//                leftBackDrive.setPower(0.5);
-//                sleep(1800);
-//                rightBackDrive.setPower(0);
-//                leftBackDrive.setPower(0);
-//                leftFrontDrive.setPower(0);
-//                rightFrontDrive.setPower(0);
 
                 // The OpenCV pipeline automatically processes frames and handles detection
         }
@@ -299,6 +352,49 @@ public class CamerAutoTest extends LinearOpMode {
 
 
     }
+
+    private double linearBotPosition_left(){
+        double current_left = leftEncoder.getCurrentPosition();
+
+        double WHEEL_RADIUS_ODO = 0.66;
+        double inches_moved_left =0;
+
+        double TICKS_TO_INCHES_2 = 0;
+        double rev_ticks = 8192;
+
+
+           TICKS_TO_INCHES_2 = ((  2.0 *WHEEL_RADIUS_ODO) * Math.PI); // does not convert to inches missnamed
+                                                //           [x_0]                [delta_x]
+                                                //xfinal ==  [y_0]       +        [delta_y]
+                                                //           [0_0//placeholder]   [placeholder]
+           inches_moved_left = ((inital_left_pos / TICKS_TO_INCHES_2)   + (current_left/TICKS_TO_INCHES_2)) / rev_ticks;
+
+
+        return inches_moved_left;
+        //return inches_moved_right;
+    }
+    private double linearBotPositon_Right(){
+        double current_right = rightEncoder.getCurrentPosition();
+
+        double WHEEL_RADIUS_ODO = 0.66;
+        double inches_moved_right =0;
+
+        double TICKS_TO_INCHES_2 = 0;
+        double rev_ticks = 8192;
+
+        // auto_seconds_since_start = clock.seconds();
+
+        TICKS_TO_INCHES_2 = ((  2.0 *WHEEL_RADIUS_ODO) * Math.PI); // does not convert to inches missnamed
+        //           [x_0]                [delta_x]
+        //xfinal ==  [y_0]       +        [delta_y]
+        //           [0_0//placeholder]   [placeholder]
+        inches_moved_right = ((inital_right_pos / TICKS_TO_INCHES_2) + (current_right/TICKS_TO_INCHES_2)) / rev_ticks;
+
+        return inches_moved_right;
+
+
+    }
+
 
 
 
