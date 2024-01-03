@@ -84,7 +84,7 @@ public class LeaugeOneTeleOpNoRocket extends LinearOpMode {
 //    private  DcMotor intakeMotor = null;
     private Servo left_Intake_Servo_Jaw = null; //right_Intake_Servo_Jaw
 //shoulder
-    private DcMotor left_Shoulder_Motor, right_Shoulder_Motor = null;
+    private DcMotor left_Shoulder_Motor, right_Shoulder_Motor, elbow_motor = null;
 //elbow
     private Servo left_Elbow_Servo,
         right_Elbow_Servo,
@@ -140,8 +140,8 @@ public class LeaugeOneTeleOpNoRocket extends LinearOpMode {
         left_Shoulder_Motor = hardwareMap.get(DcMotor.class, "leftShoulderMotor");// this is actually the right motor
         right_Shoulder_Motor = hardwareMap.get(DcMotor.class, "rightShoulderMotor");// left motor config reversed
   //elbow
-         left_Elbow_Servo = hardwareMap.get(Servo.class, "elbowLeftServo");
-        // right_Elbow_Servo = hardwareMap.get(Servo.class, "elbowRightServo");
+        elbow_motor = hardwareMap.get(DcMotor.class, "elbowMotor");
+
  //wrist
      //    wrist_Right_Servo = hardwareMap.get(Servo.class, "wristRightServo");
  //fingers
