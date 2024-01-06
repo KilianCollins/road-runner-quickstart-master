@@ -32,8 +32,6 @@ package org.firstinspires.ftc.teamcode.drive.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -67,11 +65,11 @@ import org.firstinspires.ftc.teamcode.util.Encoder;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@TeleOp(name="league3 teleOp test for v4 out take")
+@TeleOp(name="league3 tjlAkjsdfhajhsdfbluvaef out take")
 //@Disabled
 
 // the current teleop
-public class League3TestTeleOp extends LinearOpMode {
+public class League3MacroTestTeleOp extends LinearOpMode {
 
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
@@ -109,6 +107,11 @@ public class League3TestTeleOp extends LinearOpMode {
     private int waiting_to_launch = -100;
     private int raise_to_launch = -2500;
 
+    private double fix_pix_pos =0.2;
+
+    private double wrist_score = 0.5;
+
+
     //teleop
     private double low_elbow = 1;
     private double shoulder_power = 0.75;
@@ -143,7 +146,7 @@ public class League3TestTeleOp extends LinearOpMode {
         finger_one_servo =  hardwareMap.get(Servo.class,"fingerOne");
         finger_two_servo = hardwareMap.get(Servo.class,"fingerTwo");
 
-        wrist_Left_Servo = hardwareMap.get(Servo.class,"leftWrist");
+       // wrist_Left_Servo = hardwareMap.get(Servo.class,"leftWrist");
         wrist_Right_Servo = hardwareMap.get(Servo.class,"rightWrist");
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -159,8 +162,8 @@ public class League3TestTeleOp extends LinearOpMode {
     //elbow
         elbow_motor.setDirection(DcMotor.Direction.REVERSE);
     // wrist
-        wrist_Left_Servo.setDirection(Servo.Direction.REVERSE);
-        wrist_Right_Servo.setDirection(Servo.Direction.REVERSE);
+        //wrist_Left_Servo.setDirection(Servo.Direction.REVERSE);
+        wrist_Right_Servo.setDirection(Servo.Direction.FORWARD);
 
         telemetry.addData("Status", "Initialized");
 
@@ -200,6 +203,14 @@ public class League3TestTeleOp extends LinearOpMode {
                 right_Shoulder_Motor.setPower(0.5);
                 telemetry.addData("right shoulder down: ", right_Shoulder_Motor.getCurrentPosition());
                 telemetry.update();
+                sleep(50);
+                elbow_motor.setTargetPosition(100);
+                elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elbow_motor.setPower(0.5);
+                telemetry.addData("elbow down: ", elbow_motor.getCurrentPosition());
+                telemetry.update();
+
+
             }
             if (gamepad2.b) { /* left right up */
                 left_Shoulder_Motor.setTargetPosition(2900);
@@ -212,27 +223,44 @@ public class League3TestTeleOp extends LinearOpMode {
                 right_Shoulder_Motor.setPower(0.5);
                 telemetry.addData("right shoulder up: ", right_Shoulder_Motor.getCurrentPosition());
                 telemetry.update();
-            }
-///////
-            if (gamepad2.dpad_left) {/* elbow down */
-                elbow_motor.setTargetPosition(100);
-                elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                elbow_motor.setPower(0.5);
-                telemetry.addData("elbow down: ", elbow_motor.getCurrentPosition());
-                telemetry.update();
-            }
-            if (gamepad2.dpad_right) {/* elbow up */
+                sleep(50);
+
                 elbow_motor.setTargetPosition(2900);
                 elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elbow_motor.setPower(0.5);
                 telemetry.addData("elbow up: ", elbow_motor.getCurrentPosition());
                 telemetry.update();
+                sleep(50);
+
             }
+///////
+//            if (gamepad2.dpad_left) {/* elbow down */
+//                elbow_motor.setTargetPosition(100);
+//                elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                elbow_motor.setPower(0.5);
+//                telemetry.addData("elbow down: ", elbow_motor.getCurrentPosition());
+//                telemetry.update();
+//            }
+//            if (gamepad2.dpad_right) {/* elbow up */
+//                elbow_motor.setTargetPosition(2900);
+//                elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                elbow_motor.setPower(0.5);
+//                telemetry.addData("elbow up: ", elbow_motor.getCurrentPosition());
+//                telemetry.update();
+//            }
 
 
 
 
+
+
+//            wrist_Left_Servo.scaleRange(0,1);
+//            wrist_Left_Servo.setPosition(1);
+//            wrist_Right_Servo.scaleRange(0,1);
+//            wrist_Right_Servo.setPosition(1);
 //
+//
+
 //            if (gamepad1.a){ /*wrist left up */
 //                wrist_Left_Servo.scaleRange(0,1);
 //                wrist_Left_Servo.setPosition(1);
@@ -243,14 +271,18 @@ public class League3TestTeleOp extends LinearOpMode {
 //            }
 //
 //
-//            if (gamepad1.x){/*wrist right up */
-//                wrist_Right_Servo.scaleRange(0,1);
-//                wrist_Right_Servo.setPosition(1);
-//            }
-//            if (gamepad1.b){/*wrist right down*/
-//                wrist_Right_Servo.scaleRange(0,1);
-//                wrist_Right_Servo.setPosition(0);
-//            }
+            if (gamepad1.x){/*wrist right up */
+                wrist_Right_Servo.scaleRange(0,1);
+                wrist_Right_Servo.setPosition(0.85);
+            }
+            if (gamepad1.b){/*wrist right down*/
+                wrist_Right_Servo.scaleRange(0,1);
+                wrist_Right_Servo.setPosition(0.5);
+            }
+            if(gamepad1.y){
+                wrist_Right_Servo.scaleRange(0,1);
+                wrist_Right_Servo.setPosition(0.7);
+            }
 
 //            if (gamepad1.y){ /*finger 1 2 up */
 //                finger_one_servo.scaleRange(0,1);

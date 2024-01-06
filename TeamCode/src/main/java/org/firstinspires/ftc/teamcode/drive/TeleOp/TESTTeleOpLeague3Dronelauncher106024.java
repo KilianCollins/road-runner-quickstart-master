@@ -32,7 +32,6 @@ package org.firstinspires.ftc.teamcode.drive.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -67,34 +66,22 @@ import org.firstinspires.ftc.teamcode.util.Encoder;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@TeleOp(name="league3 teleOp test for v4 out take")
+@TeleOp(name="league3 out take system test: drone launcher")
 //@Disabled
 
 // the current teleop
-public class League3TestTeleOp extends LinearOpMode {
-
-    // Declare OpMode members for each of the 4 motors.
+public class TESTTeleOpLeague3Dronelauncher106024 extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
-    // Servo servo, private static final double MID = 0.5;
-
-    ///////////////////////////////////////////////////////////////
     private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive = null;
-//jaws
-
-    //intakeMotor commented out for League2
-//    private  DcMotor intakeMotor = null;
     private Servo left_Intake_Servo_Jaw = null; //right_Intake_Servo_Jaw
-    //shoulder
     private DcMotor left_Shoulder_Motor, right_Shoulder_Motor, elbow_motor = null;
-    //elbow
     private Servo
             finger_one_servo,
             finger_two_servo,
             wrist_Right_Servo,
             wrist_Left_Servo,
-            rocket_Launcher_servo = null;
+            drone_Launcher_servo = null;
 //wrist
-
     private Encoder leftEncoder = null;
     private Encoder rightEncoder = null;
     private Encoder frontEncoder = null;
@@ -102,12 +89,8 @@ public class League3TestTeleOp extends LinearOpMode {
     //537.7 for 312
     private int shoulder_scoring = -2900;// which directon for right sholder motor rotate??
     private int low_shoulder = 80; // all the wa down
+//end game
 
-    //end game
-    private int hanging_pos_down = 1000;
-
-    private int waiting_to_launch = -100;
-    private int raise_to_launch = -2500;
 
     //teleop
     private double low_elbow = 1;
@@ -119,6 +102,7 @@ public class League3TestTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() {
 
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //drive
         leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFront");
@@ -129,22 +113,16 @@ public class League3TestTeleOp extends LinearOpMode {
         left_Shoulder_Motor = hardwareMap.get(DcMotor.class, "leftShoulderMotor");
         right_Shoulder_Motor = hardwareMap.get(DcMotor.class, "rightShoulderMotor");
 //jaws
-        //intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-        //    left_Intake_Servo_Jaw = hardwareMap.get(Servo.class, "leftIntakeServoJaws");
-        //    right_Intake_Servo_Jaw = hardwareMap.get(Servo.class, "rightIntakeServoJaws");
 
-
-//shoulder
-//        left_Shoulder_Motor = hardwareMap.get(DcMotor.class, "leftShoulderMotor");// this is actually the right motor
-//        right_Shoulder_Motor = hardwareMap.get(DcMotor.class, "rightShoulderMotor");// left motor config reversed
-//  //elbow
         elbow_motor = hardwareMap.get(DcMotor.class, "elbowMotor");
 
         finger_one_servo =  hardwareMap.get(Servo.class,"fingerOne");
         finger_two_servo = hardwareMap.get(Servo.class,"fingerTwo");
 
-        wrist_Left_Servo = hardwareMap.get(Servo.class,"leftWrist");
+       // wrist_Left_Servo = hardwareMap.get(Servo.class,"leftWrist");
         wrist_Right_Servo = hardwareMap.get(Servo.class,"rightWrist");
+
+        drone_Launcher_servo = hardwareMap.get(Servo.class, "droneLauncher");
 
 ////////////////////////////////////////////////////////////////////////////////////
         //drive
@@ -153,14 +131,13 @@ public class League3TestTeleOp extends LinearOpMode {
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 
-      //shoulder
         left_Shoulder_Motor.setDirection(DcMotor.Direction.REVERSE);
         right_Shoulder_Motor.setDirection(DcMotor.Direction.REVERSE);
-    //elbow
-        elbow_motor.setDirection(DcMotor.Direction.REVERSE);
-    // wrist
-        wrist_Left_Servo.setDirection(Servo.Direction.REVERSE);
-        wrist_Right_Servo.setDirection(Servo.Direction.REVERSE);
+
+        elbow_motor.setDirection(DcMotor.Direction.FORWARD);
+
+        wrist_Right_Servo.setDirection(Servo.Direction.FORWARD);
+        drone_Launcher_servo.setDirection(Servo.Direction.REVERSE);
 
         telemetry.addData("Status", "Initialized");
 
@@ -200,6 +177,14 @@ public class League3TestTeleOp extends LinearOpMode {
                 right_Shoulder_Motor.setPower(0.5);
                 telemetry.addData("right shoulder down: ", right_Shoulder_Motor.getCurrentPosition());
                 telemetry.update();
+                sleep(50);
+                elbow_motor.setTargetPosition(100);
+                elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elbow_motor.setPower(0.5);
+                telemetry.addData("elbow down: ", elbow_motor.getCurrentPosition());
+                telemetry.update();
+
+
             }
             if (gamepad2.b) { /* left right up */
                 left_Shoulder_Motor.setTargetPosition(2900);
@@ -212,58 +197,30 @@ public class League3TestTeleOp extends LinearOpMode {
                 right_Shoulder_Motor.setPower(0.5);
                 telemetry.addData("right shoulder up: ", right_Shoulder_Motor.getCurrentPosition());
                 telemetry.update();
-            }
-///////
-            if (gamepad2.dpad_left) {/* elbow down */
-                elbow_motor.setTargetPosition(100);
-                elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                elbow_motor.setPower(0.5);
-                telemetry.addData("elbow down: ", elbow_motor.getCurrentPosition());
-                telemetry.update();
-            }
-            if (gamepad2.dpad_right) {/* elbow up */
+                sleep(50);
+
                 elbow_motor.setTargetPosition(2900);
                 elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elbow_motor.setPower(0.5);
                 telemetry.addData("elbow up: ", elbow_motor.getCurrentPosition());
                 telemetry.update();
+                sleep(50);
+
+            }
+
+
+            if(gamepad1.a){ /*drone launch __0__*/
+                drone_Launcher_servo.scaleRange(0,1);
+                drone_Launcher_servo.setPosition(0);
+            }
+            if(gamepad1.x){/*drone hold __1__ */
+                drone_Launcher_servo.scaleRange(0,1);
+                drone_Launcher_servo.setPosition(1);
             }
 
 
 
 
-//
-//            if (gamepad1.a){ /*wrist left up */
-//                wrist_Left_Servo.scaleRange(0,1);
-//                wrist_Left_Servo.setPosition(1);
-//            }
-//            if (gamepad1.y){/*wrist left down */
-//                wrist_Left_Servo.scaleRange(0,1);
-//                wrist_Left_Servo.setPosition(0);
-//            }
-//
-//
-//            if (gamepad1.x){/*wrist right up */
-//                wrist_Right_Servo.scaleRange(0,1);
-//                wrist_Right_Servo.setPosition(1);
-//            }
-//            if (gamepad1.b){/*wrist right down*/
-//                wrist_Right_Servo.scaleRange(0,1);
-//                wrist_Right_Servo.setPosition(0);
-//            }
-
-//            if (gamepad1.y){ /*finger 1 2 up */
-//                finger_one_servo.scaleRange(0,1);
-//                finger_one_servo.setPosition(0.75);
-//                finger_two_servo.scaleRange(0,1);
-//                finger_two_servo.setPosition(0.75);
-//            }
-//            if(gamepad1.b){/*finger 1 2 down */
-//                finger_one_servo.scaleRange(0,1);
-//                finger_one_servo.setPosition(0);
-//                finger_two_servo.scaleRange(0,1);
-//                finger_two_servo.setPosition(0);
-//            }
 
             max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
             max = Math.max(max, Math.abs(leftBackPower));
