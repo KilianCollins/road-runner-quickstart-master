@@ -66,36 +66,23 @@ import org.firstinspires.ftc.teamcode.util.Encoder;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@TeleOp(name="league3 out take system test: drone launcher WITH third mode" +
-        "")
+@TeleOp(name="league3 total outtake system test: sh el wr fi" + "")
 //@Disabled
 
 // the current teleop
-public class TESTTeleOpLeague3DronelauncherWITHThirdMode106024 extends LinearOpMode {
+public class TESTTeleOpCoordinationOFOutTake106024 extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive = null;
-    //private Servo left_Intake_Servo_Jaw = null; //right_Intake_Servo_Jaw
     private DcMotor left_Shoulder_Motor, right_Shoulder_Motor, elbow_motor, intake_motor = null;
     private Servo
             finger_one_servo,
             finger_two_servo,
             wrist_Right_Servo,
-            wrist_Left_Servo,
             drone_Launcher_servo = null;
-//wrist
-    private Encoder leftEncoder = null;
-    private Encoder rightEncoder = null;
-    private Encoder frontEncoder = null;
 
-    //537.7 for 312
-    private int shoulder_scoring = -2900;// which directon for right sholder motor rotate??
-    private int low_shoulder = 80; // all the wa down
-//end game
+   // private int pos = 0;
 
 
-    //teleop
-    private double low_elbow = 1;
-    private double shoulder_power = 0.75;
 
     private double finger_score = 0.75;
 
@@ -168,7 +155,39 @@ public class TESTTeleOpLeague3DronelauncherWITHThirdMode106024 extends LinearOpM
             double leftBackPower = axial - lateral + yaw;
             double rightBackPower = axial + lateral - yaw;
 
-
+            // G2
+//            if (gamepad2.dpad_left) {/* elbow down */
+//                elbow_motor.setTargetPosition(50);
+//                elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                elbow_motor.setPower(0.5);
+//                telemetry.addData("elbow down: ", elbow_motor.getCurrentPosition());
+//                telemetry.update();
+//
+//                if(gamepad2.start){
+//                    elbow_motor.setPower(0);
+//                }
+//                else{
+//                    continue;
+//                }
+//
+//            }
+//            if (gamepad2.dpad_right) {/* elbow up */
+//                elbow_motor.setTargetPosition(600);
+//                elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                elbow_motor.setPower(0.3);
+//                elbow_motor.setTargetPosition(650);
+//                elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                elbow_motor.setPower(0.3);
+//                telemetry.addData("elbow up: ", elbow_motor.getCurrentPosition());
+//                telemetry.update();
+//                if(gamepad2.start){
+//                    elbow_motor.setPower(0);
+//                }
+//                else{
+//                    continue;
+//                }
+//
+//            }
             if (gamepad2.a) { /* left right down */
                 left_Shoulder_Motor.setTargetPosition(100);
                 left_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -180,14 +199,12 @@ public class TESTTeleOpLeague3DronelauncherWITHThirdMode106024 extends LinearOpM
                 right_Shoulder_Motor.setPower(0.5);
                 telemetry.addData("right shoulder down: ", right_Shoulder_Motor.getCurrentPosition());
                 telemetry.update();
-                sleep(50);
+
                 elbow_motor.setTargetPosition(100);
                 elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elbow_motor.setPower(0.5);
                 telemetry.addData("elbow down: ", elbow_motor.getCurrentPosition());
                 telemetry.update();
-
-
             }
             if (gamepad2.b) { /* left right up */
                 left_Shoulder_Motor.setTargetPosition(2900);
@@ -200,18 +217,31 @@ public class TESTTeleOpLeague3DronelauncherWITHThirdMode106024 extends LinearOpM
                 right_Shoulder_Motor.setPower(0.5);
                 telemetry.addData("right shoulder up: ", right_Shoulder_Motor.getCurrentPosition());
                 telemetry.update();
-                sleep(50);
 
-                elbow_motor.setTargetPosition(2900);
+                elbow_motor.setTargetPosition(800);
                 elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elbow_motor.setPower(0.5);
                 telemetry.addData("elbow up: ", elbow_motor.getCurrentPosition());
                 telemetry.update();
-                sleep(50);
 
             }
+//            int pos = 0;
+//            if(gamepad2.start && gamepad2.back){
+//
+//                if(gamepad2.left_trigger >= 0.5) {
+//                    pos += 100;
+//
+//                }if(gamepad2.right_trigger >= 0.5){
+//                    pos -= 100;
+//                }
+//            }
+//
+//            elbow_motor.setTargetPosition(pos);
+//            elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            elbow_motor.setPower(0.5);
 
-
+//G1
+/* drone launcher now works reliably 1_6_24 */
             while(gamepad1.back){/*works reliably with bool buttons */
                 if(gamepad1.y){/*drone launch __0__*/
                     drone_Launcher_servo.scaleRange(0,1);
@@ -222,7 +252,7 @@ public class TESTTeleOpLeague3DronelauncherWITHThirdMode106024 extends LinearOpM
                     drone_Launcher_servo.setPosition(0.5);
                 }
             }
-
+/* outake last stage fixed 1_6_24 */
             if (gamepad1.y){ /*finger 1 2 up */
                 finger_one_servo.scaleRange(0,1);
                 finger_one_servo.setPosition(0.60);
@@ -247,6 +277,7 @@ public class TESTTeleOpLeague3DronelauncherWITHThirdMode106024 extends LinearOpM
             }else{
                 intake_motor.setPower(0);
             }
+
 
 
 
