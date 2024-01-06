@@ -234,14 +234,11 @@ public class TESTTeleOpLeague3DronelauncherWITHThirdMode106024 extends LinearOpM
                 finger_two_servo.setPosition(0);
             }
 
-            while (gamepad1.left_trigger <= 0.5 ){// || gamepad1.left_trigger >0.5
 
-
-                intake_motor.setPower(0.5);
-
-            }
-            if (gamepad1.right_trigger <= 0.5){
-                intake_motor.setPower(-0.5);
+            if (gamepad1.right_trigger >= 0.5){
+                intake_motor.setPower(0.7);
+            }else{
+                intake_motor.setPower(0);
             }
 
 
