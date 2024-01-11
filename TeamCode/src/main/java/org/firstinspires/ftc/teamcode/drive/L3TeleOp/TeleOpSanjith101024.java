@@ -257,16 +257,16 @@ public class TeleOpSanjith101024 extends LinearOpMode {
 //                wrist_Right_Servo.scaleRange(0,1);
 //                wrist_Right_Servo.setPosition(0.85);
 //            }
-          while(gamepad2.back) {
-              if (gamepad2.a) {
+          while(gamepad2.back){
+              if (gamepad2.a){
                   wrist_Right_Servo.scaleRange(0, 1);
                   wrist_Right_Servo.setPosition(0.9);
-              } else {
+              }else{
                   wrist_Right_Servo.scaleRange(0, 1);
                   wrist_Right_Servo.setPosition(0.7);
               }
-          }
-            if (gamepad2.y){// chokeing
+            }
+            if(gamepad2.y){// chokeing
                 wrist_Right_Servo.scaleRange(0,1);
                 wrist_Right_Servo.setPosition(0.5);
             }
@@ -274,16 +274,16 @@ public class TeleOpSanjith101024 extends LinearOpMode {
                 wrist_Right_Servo.scaleRange(0,1);
                 wrist_Right_Servo.setPosition(0.7);
             }
-
-            if (gamepad2.right_trigger >= 0.5){
+            if(gamepad2.right_trigger >= 0.5){
                 intake_motor.setPower(1);
-            }else{
+            }
+            else{
                 intake_motor.setPower(0);
             }
-
             if(gamepad2.left_trigger >= 0.5){
                 intake_motor.setPower(-0.7);
-            }else{
+            }
+            else{
                 intake_motor.setPower(0);
             }
 //
