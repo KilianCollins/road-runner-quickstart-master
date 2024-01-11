@@ -188,7 +188,7 @@ public class TESTTeleOpCoordinationOFOutTake106024 extends LinearOpMode {
 //                }
 //
 //            }
-            if (gamepad2.a) { /* left right down */
+            if (gamepad2.left_trigger >= 0.5) { /* left right down */
                 left_Shoulder_Motor.setTargetPosition(100);
                 left_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 left_Shoulder_Motor.setPower(0.5);
@@ -206,7 +206,7 @@ public class TESTTeleOpCoordinationOFOutTake106024 extends LinearOpMode {
                 telemetry.addData("elbow down: ", elbow_motor.getCurrentPosition());
                 telemetry.update();
             }
-            if (gamepad2.b) { /* left right up */
+            if (gamepad2.right_trigger >= 0.5) { /* left right up */
                 left_Shoulder_Motor.setTargetPosition(2900);
                 left_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 left_Shoulder_Motor.setPower(0.5);
@@ -277,8 +277,6 @@ public class TESTTeleOpCoordinationOFOutTake106024 extends LinearOpMode {
             }else{
                 intake_motor.setPower(0);
             }
-
-
 
 
             max = Math.max(Math.abs(leftFrontPower), Math.abs(rightFrontPower));
