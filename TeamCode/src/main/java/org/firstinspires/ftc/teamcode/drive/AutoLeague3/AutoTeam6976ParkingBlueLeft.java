@@ -12,8 +12,8 @@ public class AutoTeam6976ParkingBlueLeft extends LinearOpMode{
 
     Team6976HWMap robot = new Team6976HWMap();
     ElapsedTime Time = new ElapsedTime();
-    private double backwards_power = -0.3;
-    private double rampdown_power = 0.3;
+    private double forwards_power = 0.3;
+  //  private double rampdown_power = -0.3;
     // double multy = 0.3;
 
     @Override
@@ -36,10 +36,10 @@ public class AutoTeam6976ParkingBlueLeft extends LinearOpMode{
 //        robot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //  double tick = (distance * 537.7)/(4 * Math.PI);
         Time.reset();
-        robot.rightFrontDrive.setPower(backwards_power);//motor 1 //Setting the power to (multy) variable created above
-        robot.leftFrontDrive.setPower(backwards_power);//motor 2 fast //Link to Wheel Direction Mapping Below
-        robot.rightBackDrive.setPower(backwards_power);//motor 0 //https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html
-        robot.leftBackDrive.setPower(backwards_power);// motor 3
+        robot.rightFrontDrive.setPower(forwards_power);//motor 1 //Setting the power to (multy) variable created above
+        robot.leftFrontDrive.setPower(forwards_power);//motor 2 fast //Link to Wheel Direction Mapping Below
+        robot.rightBackDrive.setPower(forwards_power);//motor 0 //https://gm0.org/en/latest/docs/software/tutorials/mecanum-drive.html
+        robot.leftBackDrive.setPower(forwards_power);// motor 3
         sleep(3000);
 
 

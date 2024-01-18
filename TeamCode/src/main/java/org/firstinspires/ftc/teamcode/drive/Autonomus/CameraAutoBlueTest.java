@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.drive.TeleOp.Team6976HWMap;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -24,25 +25,27 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name = "OpenCV Testing detects distance from BLUE")
+@Autonomous(name = "BLUE RIGHT Auto Test v1")
 
 public class CameraAutoBlueTest extends LinearOpMode {
+
+   /// Team6976HWMap drive_train = new Team6976HWMap();
 
     double cX = 0;
     double cY = 0;
     double width = 0;
 
-    double spikeRight_MIN = 20.0;
-    double spikeRight_MAX = 23.0;
+    double spikeRight_MIN = 21.5;
+    double spikeRight_MAX = 22.4;
 
-    double spikeMiddle_MIN = 29.0;
-    double spikeMiddle_MAX = 31.0;
+    double spikeMiddle_MIN = 23;
+    double spikeMiddle_MAX = 25;
 
     double spike_OUT_OF_BOUNDS = 35.00;
 
-    private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive = null;
+    private double wheel_power_multi = 0.4;
 
-    private double front_left_wheel_power, front_right_wheel_power, back_left_wheel_power, back_right_wheel_power;
+    private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive, intakeMotor = null;
 
     private OpenCvCamera controlHubCam;  // Use OpenCvCamera class from FTC SDK
     private static final int CAMERA_WIDTH = 640; // width  of wanted camera resolution
@@ -67,58 +70,21 @@ public class CameraAutoBlueTest extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here must correspond
         // to the names assigned during the robot configuration step on the DS or RC devices.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-//drive
+        //drive
         leftFrontDrive  = hardwareMap.get(DcMotor.class, "leftFront");
         leftBackDrive  = hardwareMap.get(DcMotor.class, "leftRear");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFront");
         rightBackDrive = hardwareMap.get(DcMotor.class, "rightRear");
-//jaws
-//        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
-//        left_Intake_Servo_Jaw = hardwareMap.get(Servo.class, "leftIntakeServoJaws");
-//        right_Intake_Servo_Jaw = hardwareMap.get(Servo.class, "rightIntakeServoJaws");
-
-        //2 SERVOS
-//shoulder
-//        left_Shoulder_Motor = hardwareMap.get(DcMotor.class, "leftShoulderMotor");
-//        right_Shoulder_Motor = hardwareMap.get(DcMotor.class, "rightShoulderMotor");
-//  //elbow
-//         left_Elbow_Servo = hardwareMap.get(Servo.class, "elbowLeftServo");
-//         right_Elbow_Servo = hardwareMap.get(Servo.class, "elbowRightServo");
-        //wrist
-        // wrist_Right_Servo = hardwareMap.get(Servo.class, "wristRightServo");
-// //fingers
-//         finger_one_servo = hardwareMap.get(Servo.class, "fingerOne");
-//         finger_two_servo = hardwareMap.get(Servo.class, "fingerTwo");
-//         rocket_Launcher_servo = hardwareMap.get(Servo.class, "droneLauncher");
-////odometry
-//        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftRear"));// remane odo pods
-//        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront"));
-//        frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "leftFront"));
-
-
-        //elbow
-//        left_Elbow_Servo = hardwareMap.get(Servo.class, "elbowLeftServo");
-//        right_Elbow_Servo = hardwareMap.get(Servo.class, "elbowRightServo");
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // ########################################################################################
-        // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
-        // ########################################################################################
-        // Most robots need the motors on one side to be reversed to drive forward.
-        // The motor reversals shown here are for a "direct drive" robot (the wheels turn the same direction as the motor shaft)
-        // If your robot has additional gear reductions or uses a right-angled drive, it's important to ensure
-        // that your motors are turning in the correct direction.  So, start out with the reversals here, BUT
-        // when you first test your robot, push the left joystick forward and observe the direction the wheels turn.
-        // Reverse the direction (flip FORWARD <-> REVERSE ) of any wheel that runs backward
-        // Keep testing until ALL the wheels move the robot forward when you push the left joystick forward
-        /*
-        dont need to delcare directions for servo  i think
-         */
+        //intake
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 ////////////////////////////////////////////////////////////////////////////////////
         //drive
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+////////////////////////////////////////////////////////////////////////////////////
+
 
    while (opModeInInit()) {
        telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
@@ -136,21 +102,11 @@ public class CameraAutoBlueTest extends LinearOpMode {
            telemetry.addLine("i dont see it so it must be spike left");
 
        }
-       continue;
+
    }
 
 
         waitForStart();
-
-//        boolean spikeRight = getDistance(width) > 23.00 && getDistance(width) < 25.50;
-//        boolean spikeMiddle = getDistance(width) > 25.00 && getDistance(width) < 29.00;
-//// spike left is not ealisly inframe so the default will be left
-//        boolean spikeLEFT = getDistance(width) > 29;
-
-
-
-
-
             while (opModeIsActive()) {
 
             telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
@@ -163,33 +119,234 @@ public class CameraAutoBlueTest extends LinearOpMode {
                 telemetry.addLine("i see the prop its on spike right ");
                 telemetry.update();
 
-                //front
-                //leftFrontDrive.setPower(0.5);
-               // rightFrontDrive.setPower(0.5);
-                //back
-            //strafe right
+                // drive backwards for 4.5 secs
+                rightFrontDrive.setPower(-wheel_power_multi);
+                leftFrontDrive.setPower(-wheel_power_multi);
+                rightBackDrive.setPower(-wheel_power_multi);
+                leftBackDrive.setPower(-wheel_power_multi);
+                    sleep(3000);
+                    rightFrontDrive.setPower(0);
+                    leftFrontDrive.setPower(0);
+                    rightBackDrive.setPower(0);
+                    leftBackDrive.setPower(0);
+                    sleep(600);
+                //strafe (robot left) line intake up with opposite wall facing short edge of right spike (1 sec)
+                rightFrontDrive.setPower(+wheel_power_multi);
+                leftFrontDrive.setPower(-wheel_power_multi);
+                rightBackDrive.setPower(-wheel_power_multi);
+                leftBackDrive.setPower(+wheel_power_multi);
+                    sleep(1000);
+                //drive (robot forwards) for 800ms
+                rightFrontDrive.setPower(+wheel_power_multi);
+                leftFrontDrive.setPower(+wheel_power_multi);
+                rightBackDrive.setPower(+wheel_power_multi);
+                leftBackDrive.setPower(+wheel_power_multi);
+                    sleep(800);
+                    rightFrontDrive.setPower(0);
+                    leftFrontDrive.setPower(0);
+                    rightBackDrive.setPower(0);
+                    leftBackDrive.setPower(0);
+                    sleep(600);
+                // spit purple pix
+                    intakeMotor.setPower(-0.4);
+                        sleep(1000);
+                //drive (robot backwards) for 2 secs
+                rightFrontDrive.setPower(-wheel_power_multi);
+                leftFrontDrive.setPower(-wheel_power_multi);
+                rightBackDrive.setPower(-wheel_power_multi);
+                leftBackDrive.setPower(-wheel_power_multi);
+                    sleep(2000);
+                    rightFrontDrive.setPower(0);
+                    leftFrontDrive.setPower(0);
+                    rightBackDrive.setPower(0);
+                    leftBackDrive.setPower(0);
+                    sleep(600);
+                //strafe (robot right) for 5 seconds into back drop blue
+                rightFrontDrive.setPower(-wheel_power_multi);
+                leftFrontDrive.setPower(+wheel_power_multi);
+                rightBackDrive.setPower(+wheel_power_multi);
+                leftBackDrive.setPower(-wheel_power_multi);
+                    sleep(5000);
+                    rightFrontDrive.setPower(0);
+                    leftFrontDrive.setPower(0);
+                    rightBackDrive.setPower(0);
+                    leftBackDrive.setPower(0);
+                    sleep(600);
+                //spit yellow pix
+                    intakeMotor.setPower(-0.4);
+                        sleep(2000);
+//                //strafe left
+//                robot.DriveRightFront.setPower(+multy);
+//                robot.DriveLeftFront.setPower(-multy);
+//                robot.DriveRightBack.setPower(-multy);
+//                robot.DriveLeftBack.setPower(+multy);
+
+                //strafe right
+//                robot.DriveRightFront.setPower(-multy);
+//                robot.DriveLeftFront.setPower(+multy);
+//                robot.DriveRightBack.setPower(+multy);
+//                robot.DriveLeftBack.setPower(-multy);
 
 // spike middle
+//middle
             } if (blueBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN && blueBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX ) {
                 telemetry.addLine("i see the prop its on spike middle 999999999999999");
                 telemetry.update();
-        //strafe left
+
+    // remeber robot is oriented intake towards wall
+
+                //drive straight backwards for 3 seconds (dirves over middle spike)
+                rightFrontDrive.setPower(-wheel_power_multi);
+                leftFrontDrive.setPower(-wheel_power_multi);
+                rightBackDrive.setPower(-wheel_power_multi);
+                leftBackDrive.setPower(-wheel_power_multi);
+                    sleep(1900);
+                    rightFrontDrive.setPower(0);
+                    leftFrontDrive.setPower(0);
+                    rightBackDrive.setPower(0);
+                    leftBackDrive.setPower(0);
+                    sleep(600);
+                //stop with intake 1-2 inchs away from mid spike
+
+                //spit purple pix
+                intakeMotor.setPower(0.5);
+                    sleep(400);
+                //drive straight back for 2 secs (10 inches ish)
+                rightFrontDrive.setPower(-wheel_power_multi);
+                leftFrontDrive.setPower(-wheel_power_multi);
+                rightBackDrive.setPower(-wheel_power_multi);
+                leftBackDrive.setPower(-wheel_power_multi);
+                    sleep(600);
+                    rightFrontDrive.setPower(0);
+                    leftFrontDrive.setPower(0);
+                    rightBackDrive.setPower(0);
+                    leftBackDrive.setPower(0);
+                    sleep(800);
+                //strafe right(drivers left) for 4 secs into back drop blue
+                rightFrontDrive.setPower(-wheel_power_multi);
+                leftFrontDrive.setPower(+wheel_power_multi);
+                rightBackDrive.setPower(+wheel_power_multi);
+                leftBackDrive.setPower(-wheel_power_multi);
+                    sleep(4000);
+                    rightFrontDrive.setPower(0);
+                    leftFrontDrive.setPower(0);
+                    rightBackDrive.setPower(0);
+                    leftBackDrive.setPower(0);
+                    sleep(600);
+                //rotate rb left
+                    //was right now left
+                rightFrontDrive.setPower(+wheel_power_multi);
+                leftFrontDrive.setPower(-wheel_power_multi);
+                rightBackDrive.setPower(+wheel_power_multi);
+                leftBackDrive.setPower(-wheel_power_multi);
+                    sleep(700);
+                    rightFrontDrive.setPower(0);
+                    leftFrontDrive.setPower(0);
+                    rightBackDrive.setPower(0);
+                    leftBackDrive.setPower(0);
+                    sleep(600);
+//
+                    rightFrontDrive.setPower(-wheel_power_multi);
+                    leftFrontDrive.setPower(+wheel_power_multi);
+                    rightBackDrive.setPower(+wheel_power_multi);
+                    leftBackDrive.setPower(-wheel_power_multi);
+                    sleep(4000);
+                    rightFrontDrive.setPower(0);
+                    leftFrontDrive.setPower(0);
+                    rightBackDrive.setPower(0);
+                    leftBackDrive.setPower(0);
+                    sleep(600);
+                // spit yellow pix
+                intakeMotor.setPower(0.4);
+                    sleep(2000);
 
             }
 // spike left && prop not found
              if  (blueBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && blueBlobDetectionPipeline.getDistance(width) < 40 ){
                 telemetry.addLine("i dont see it so it must be spike left");
                 telemetry.update();
+                //straight backwards until  half way to spike (2secs)
+                 rightFrontDrive.setPower(-wheel_power_multi);
+                 leftFrontDrive.setPower(-wheel_power_multi);
+                 rightBackDrive.setPower(-wheel_power_multi);
+                 leftBackDrive.setPower(-wheel_power_multi);
+                     sleep(2000);
+                     rightFrontDrive.setPower(0);
+                     leftFrontDrive.setPower(0);
+                     rightBackDrive.setPower(0);
+                     leftBackDrive.setPower(0);
+                     sleep(600);
+                //rotate (robot right) so intake now perpendicular to left spike
+                 rightFrontDrive.setPower(-wheel_power_multi);
+                 leftFrontDrive.setPower(+wheel_power_multi);
+                 rightBackDrive.setPower(-wheel_power_multi);
+                 leftBackDrive.setPower(+wheel_power_multi);
+                    sleep(2500);
+                     rightFrontDrive.setPower(0);
+                     leftFrontDrive.setPower(0);
+                     rightBackDrive.setPower(0);
+                     leftBackDrive.setPower(0);
+                     sleep(600);
+                //strafe (robot right) until intake centered with left spike (2 secs)
+                 rightFrontDrive.setPower(-wheel_power_multi);
+                 leftFrontDrive.setPower(+wheel_power_multi);
+                 rightBackDrive.setPower(+wheel_power_multi);
+                 leftBackDrive.setPower(-wheel_power_multi);
+                     sleep(2000);
+                     rightFrontDrive.setPower(0);
+                     leftFrontDrive.setPower(0);
+                     rightBackDrive.setPower(0);
+                     leftBackDrive.setPower(0);
+                     sleep(600);
+                // drive forward for like 600ms a few inches
+                 rightFrontDrive.setPower(+wheel_power_multi);
+                 leftFrontDrive.setPower(+wheel_power_multi);
+                 rightBackDrive.setPower(+wheel_power_multi);
+                 leftBackDrive.setPower(+wheel_power_multi);
+                     sleep(600);
+                     rightFrontDrive.setPower(0);
+                     leftFrontDrive.setPower(0);
+                     rightBackDrive.setPower(0);
+                     leftBackDrive.setPower(0);
+                     sleep(600);
 
-                 //leftFrontDrive.setPower(-0.5);
-               // rightFrontDrive.setPower(-0.5);
-                //back
-//                rightBackDrive.setPower(0.5);
-//                leftBackDrive.setPower(-0.5);
-//                sleep(3500);
-//                rightBackDrive.setPower(0);
-//                leftBackDrive.setPower(0);
+                 //spit purple pix
+                 intakeMotor.setPower(-0.4);
+                    sleep(1000);
 
+                //back up for 600ms
+                 rightFrontDrive.setPower(-wheel_power_multi);
+                 leftFrontDrive.setPower(-wheel_power_multi);
+                 rightBackDrive.setPower(-wheel_power_multi);
+                 leftBackDrive.setPower(-wheel_power_multi);
+                     sleep(700);
+                     rightFrontDrive.setPower(0);
+                     leftFrontDrive.setPower(0);
+                     rightBackDrive.setPower(0);
+                     leftBackDrive.setPower(0);
+                     sleep(700);
+                //strafe (robot right) for 2 secs
+                 rightFrontDrive.setPower(-wheel_power_multi);
+                 leftFrontDrive.setPower(+wheel_power_multi);
+                 rightBackDrive.setPower(+wheel_power_multi);
+                 leftBackDrive.setPower(-wheel_power_multi);
+                     sleep(2000);
+                     rightFrontDrive.setPower(0);
+                     leftFrontDrive.setPower(0);
+                     rightBackDrive.setPower(0);
+                     leftBackDrive.setPower(0);
+                     sleep(600);
+                //stop then drive (robot forwards) for 4 secs into backdrop blue
+                 rightFrontDrive.setPower(+wheel_power_multi);
+                 leftFrontDrive.setPower(+wheel_power_multi);
+                 rightBackDrive.setPower(+wheel_power_multi);
+                 leftBackDrive.setPower(+wheel_power_multi);
+                     sleep(4000);
+                     rightFrontDrive.setPower(0);
+                     leftFrontDrive.setPower(0);
+                     rightBackDrive.setPower(0);
+                     leftBackDrive.setPower(0);
+                     sleep(1000);
             }
                 telemetry.update();
 

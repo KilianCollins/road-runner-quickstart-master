@@ -83,6 +83,8 @@ public class TeleOpSanjith101024 extends LinearOpMode {
 
 
     private double finger_score = 0.75;
+    private int arm_resting_pos = 100;
+    private int arm_scoring_pos = 3500;
 
 
     @Override
@@ -216,30 +218,30 @@ public class TeleOpSanjith101024 extends LinearOpMode {
 //
 //            }
             if (gamepad2.dpad_down) { /* left right down */
-                left_Shoulder_Motor.setTargetPosition(100);
+                left_Shoulder_Motor.setTargetPosition(arm_resting_pos);
                 left_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 left_Shoulder_Motor.setPower(0.5);
                 telemetry.addData("left shoulder down: ", left_Shoulder_Motor.getCurrentPosition());
                 telemetry.update();
-                right_Shoulder_Motor.setTargetPosition(100);
+                right_Shoulder_Motor.setTargetPosition(arm_resting_pos);
                 right_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 right_Shoulder_Motor.setPower(0.5);
                 telemetry.addData("right shoulder down: ", right_Shoulder_Motor.getCurrentPosition());
                 telemetry.update();
 
-                elbow_motor.setTargetPosition(100);
+                elbow_motor.setTargetPosition(50);
                 elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                elbow_motor.setPower(0.5);
+                elbow_motor.setPower(0.4);
                 telemetry.addData("elbow down: ", elbow_motor.getCurrentPosition());
                 telemetry.update();
             }
             if (gamepad2.dpad_up) { /* left right up */
-                left_Shoulder_Motor.setTargetPosition(3500);
+                left_Shoulder_Motor.setTargetPosition(arm_scoring_pos);
                 left_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 left_Shoulder_Motor.setPower(0.5);
                 telemetry.addData("left shoulder up: ", left_Shoulder_Motor.getCurrentPosition());
                 telemetry.update();
-                right_Shoulder_Motor.setTargetPosition(3500);
+                right_Shoulder_Motor.setTargetPosition(arm_scoring_pos);
                 right_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 right_Shoulder_Motor.setPower(0.5);
                 telemetry.addData("right shoulder up: ", right_Shoulder_Motor.getCurrentPosition());
@@ -247,7 +249,7 @@ public class TeleOpSanjith101024 extends LinearOpMode {
 
                 elbow_motor.setTargetPosition(1200);
                 elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                elbow_motor.setPower(0.5);
+                elbow_motor.setPower(0.4);
                 telemetry.addData("elbow up: ", elbow_motor.getCurrentPosition());
                 telemetry.update();
 
@@ -281,7 +283,7 @@ public class TeleOpSanjith101024 extends LinearOpMode {
                 intake_motor.setPower(0);
             }
             if(gamepad2.left_trigger >= 0.5){
-                intake_motor.setPower(-0.7);
+                intake_motor.setPower(-1);
             }
             else{
                 intake_motor.setPower(0);
