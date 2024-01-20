@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.TeleOp.Team6976HWMap;
 
-@Autonomous(name="blue far", group="6976")
+@Autonomous(name="blue far no pixels", group="6976")
 public class AutoTeam6976ParkingBlueFar extends LinearOpMode{
 
     Team6976HWMap robot = new Team6976HWMap();

@@ -1,13 +1,15 @@
 package org.firstinspires.ftc.teamcode.drive.AutoLeague3;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 import org.firstinspires.ftc.teamcode.drive.TeleOp.Team6976HWMap;
 
-@Autonomous(name="Blue near back board ", group="6976")
+@Autonomous(name="Blue near back board no pixels", group="auto")
+
 public class AutoTeam6976ParkingBlueLeft extends LinearOpMode{
 
     Team6976HWMap robot = new Team6976HWMap();

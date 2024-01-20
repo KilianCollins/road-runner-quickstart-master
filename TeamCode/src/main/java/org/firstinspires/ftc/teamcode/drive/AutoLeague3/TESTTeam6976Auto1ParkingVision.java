@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.drive.AutoLeague3;
 import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
@@ -10,6 +11,7 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="Team6976Auto1ParkingVision", group="6976")
+@Disabled
 public class TESTTeam6976Auto1ParkingVision extends LinearOpMode{
     Team6976HWMap2023 robot = new Team6976HWMap2023();
     ElapsedTime Time = new ElapsedTime();

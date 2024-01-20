@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.Autonomus;
+package org.firstinspires.ftc.teamcode.drive.LC;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.drive.TeleOp.Team6976HWMap;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -25,9 +24,9 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name = "BLUE RIGHT Auto Test v1")
+@Autonomous(name = "BLUE RIGHT Auto with pixels v3")
 
-public class CameraAutoBlueTest extends LinearOpMode {
+public class CameraAutoBlueLC extends LinearOpMode {
 
    /// Team6976HWMap drive_train = new Team6976HWMap();
 
