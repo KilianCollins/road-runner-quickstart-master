@@ -134,6 +134,8 @@ public class CameraAutoRedLC extends LinearOpMode {
                 rightBackDrive.setPower(+wheel_power_multi);
                 leftBackDrive.setPower(-wheel_power_multi);
                     sleep(800);
+
+
                     rightFrontDrive.setPower(0);
                     leftFrontDrive.setPower(0);
                     rightBackDrive.setPower(0);
