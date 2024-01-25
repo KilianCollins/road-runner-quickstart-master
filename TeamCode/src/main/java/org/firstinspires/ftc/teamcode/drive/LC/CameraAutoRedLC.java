@@ -34,11 +34,12 @@ public class CameraAutoRedLC extends LinearOpMode {
     double cY = 0;
     double width = 0;
 
-    double spikeLeft_MIN = 21.5;
-    double spikeLeft_MAX = 22.4;
+    double spikeLeft_MIN = 21;
+    double spikeLeft_MAX = 22.9;
 
-    double spikeMiddle_MIN = 23;
-    double spikeMiddle_MAX = 25;
+    double spikeMiddle_MIN = 26;
+            ;//28.36 , 28.38, 28.
+    double spikeMiddle_MAX = 28;
 
     double spike_OUT_OF_BOUNDS = 35.00; // right
 
@@ -112,9 +113,9 @@ public class CameraAutoRedLC extends LinearOpMode {
             telemetry.addData("Distance in Inch", (redBlobDetectionPipeline.getDistance(width)));
             telemetry.addData(" actual width val: ", (width));
            // telemetry.addData("  val: ", (width));
-
-// spike left for mirrored is out of veiw
-            if (redBlobDetectionPipeline.getDistance(width) > spikeLeft_MIN && redBlobDetectionPipeline.getDistance(width) < spikeLeft_MAX){
+                    // spike left for mirrored is out of veiw
+//spike left a
+            if (redBlobDetectionPipeline.getDistance(width) > spikeLeft_MIN && redBlobDetectionPipeline.getDistance(width) < spikeLeft_MAX || gamepad1.a){
                 telemetry.addLine("i see the prop its on spike left ");
                 telemetry.update();
                 // drives rb backwards 600ms
@@ -122,20 +123,18 @@ public class CameraAutoRedLC extends LinearOpMode {
                 leftFrontDrive.setPower(-wheel_power_multi);
                 rightBackDrive.setPower(-wheel_power_multi);
                 leftBackDrive.setPower(-wheel_power_multi);
-                    sleep(600);
+                    sleep(900);
                     rightFrontDrive.setPower(0);
                     leftFrontDrive.setPower(0);
                     rightBackDrive.setPower(0);
                     leftBackDrive.setPower(0);
-                    sleep(300);
-                // strafe (rb) right (aling intake with spike left)
+                    sleep(200);
+                // strafe (rb) right (align intake with spike left)
                 rightFrontDrive.setPower(-wheel_power_multi);
                 leftFrontDrive.setPower(+wheel_power_multi);
                 rightBackDrive.setPower(+wheel_power_multi);
                 leftBackDrive.setPower(-wheel_power_multi);
-                    sleep(800);
-
-
+                    sleep(680);
                     rightFrontDrive.setPower(0);
                     leftFrontDrive.setPower(0);
                     rightBackDrive.setPower(0);
@@ -146,36 +145,38 @@ public class CameraAutoRedLC extends LinearOpMode {
                 leftFrontDrive.setPower(-wheel_power_multi);
                 rightBackDrive.setPower(-wheel_power_multi);
                 leftBackDrive.setPower(-wheel_power_multi);
-                    sleep(800);
+                    sleep(500);
                     rightFrontDrive.setPower(0);
                     leftFrontDrive.setPower(0);
                     rightBackDrive.setPower(0);
                     leftBackDrive.setPower(0);
-                    sleep(300);
+                    sleep(1000);
                 //outtake purple pix
-                intakeMotor.setPower(400);
-                //drive (rb) backwards again for 600ms
+                intakeMotor.setPower(0.3);
+                sleep(900);
+                intakeMotor.setPower(0);
+                //drive (rb) backwards again for 600ms (align with door)
                 rightFrontDrive.setPower(-wheel_power_multi);
                 leftFrontDrive.setPower(-wheel_power_multi);
                 rightBackDrive.setPower(-wheel_power_multi);
                 leftBackDrive.setPower(-wheel_power_multi);
-                    sleep(600);
+                    sleep(1000);
                     rightFrontDrive.setPower(0);
                     leftFrontDrive.setPower(0);
                     rightBackDrive.setPower(0);
                     leftBackDrive.setPower(0);
-                    sleep(300);
+                    sleep(200);
                 // drive (rb) forwars 200ms (avoid team prop)
-                rightFrontDrive.setPower(+wheel_power_multi);
-                leftFrontDrive.setPower(+wheel_power_multi);
-                rightBackDrive.setPower(+wheel_power_multi);
-                leftBackDrive.setPower(+wheel_power_multi);
-                    sleep(300);
-                    rightFrontDrive.setPower(0);
-                    leftFrontDrive.setPower(0);
-                    rightBackDrive.setPower(0);
-                    leftBackDrive.setPower(0);
-                    sleep(300);
+//                rightFrontDrive.setPower(+wheel_power_multi);
+//                leftFrontDrive.setPower(+wheel_power_multi);
+//                rightBackDrive.setPower(+wheel_power_multi);
+//                leftBackDrive.setPower(+wheel_power_multi);
+//                    sleep(300);
+//                    rightFrontDrive.setPower(0);
+//                    leftFrontDrive.setPower(0);
+//                    rightBackDrive.setPower(0);
+//                    leftBackDrive.setPower(0);
+//                    sleep(200);
                 // strafe (rb) left for 3 seconds
                 rightFrontDrive.setPower(+wheel_power_multi);
                 leftFrontDrive.setPower(-wheel_power_multi);
@@ -186,32 +187,137 @@ public class CameraAutoRedLC extends LinearOpMode {
                     leftFrontDrive.setPower(0);
                     rightBackDrive.setPower(0);
                     leftBackDrive.setPower(0);
-                    sleep(600);
-                // stop rotate (rb) left for 6-500ms
-                rightFrontDrive.setPower(+wheel_power_multi);
-                leftFrontDrive.setPower(-wheel_power_multi);
-                rightBackDrive.setPower(+wheel_power_multi);
-                leftBackDrive.setPower(-wheel_power_multi);
-                    sleep(550);
-                    rightFrontDrive.setPower(0);
-                    leftFrontDrive.setPower(0);
-                    rightBackDrive.setPower(0);
-                    leftBackDrive.setPower(0);
-                    sleep(300);
+                    sleep(200);
+                // stop rotate (rb) left for 6-500ms// right
+                rightFrontDrive.setPower(-wheel_power_multi);
+                leftFrontDrive.setPower(+wheel_power_multi);
+                rightBackDrive.setPower(-wheel_power_multi);
+                leftBackDrive.setPower(+wheel_power_multi);
+                sleep(400);
+                rightFrontDrive.setPower(0);
+                leftFrontDrive.setPower(0);
+                rightBackDrive.setPower(0);
+                leftBackDrive.setPower(0);
+                sleep(300);
+
                 // strafe (rb) left 2 seconds
                 rightFrontDrive.setPower(+wheel_power_multi);
                 leftFrontDrive.setPower(-wheel_power_multi);
                 rightBackDrive.setPower(-wheel_power_multi);
                 leftBackDrive.setPower(+wheel_power_multi);
-                sleep(2000);
+                sleep(4000);
                 rightFrontDrive.setPower(0);
                 leftFrontDrive.setPower(0);
                 rightBackDrive.setPower(0);
                 leftBackDrive.setPower(0);
+                sleep(200);
+                //rotate for error (rb left) into backdrop
+                rightFrontDrive.setPower(+wheel_power_multi);
+                leftFrontDrive.setPower(-wheel_power_multi);
+                rightBackDrive.setPower(+wheel_power_multi);
+                leftBackDrive.setPower(-wheel_power_multi);
                 sleep(600);
+                rightFrontDrive.setPower(0);
+                leftFrontDrive.setPower(0);
+                rightBackDrive.setPower(0);
+                leftBackDrive.setPower(0);
+                sleep(300);
+
                 // outake yellow pixel
                 intakeMotor.setPower(0.3);
                 sleep(1000);
+
+
+
+
+
+
+
+                //end
+
+//                //straight backwards until  half way to spike (2secs)
+//                 rightFrontDrive.setPower(-wheel_power_multi);
+//                 leftFrontDrive.setPower(-wheel_power_multi);
+//                 rightBackDrive.setPower(-wheel_power_multi);
+//                 leftBackDrive.setPower(-wheel_power_multi);
+//                     sleep(2000);
+//                     rightFrontDrive.setPower(0);
+//                     leftFrontDrive.setPower(0);
+//                     rightBackDrive.setPower(0);
+//                     leftBackDrive.setPower(0);
+//                     sleep(600);
+//                //rotate (robot right) so intake now perpendicular to left spike
+//                 rightFrontDrive.setPower(-wheel_power_multi);
+//                 leftFrontDrive.setPower(+wheel_power_multi);
+//                 rightBackDrive.setPower(-wheel_power_multi);
+//                 leftBackDrive.setPower(+wheel_power_multi);
+//                    sleep(2500);
+//                     rightFrontDrive.setPower(0);
+//                     leftFrontDrive.setPower(0);
+//                     rightBackDrive.setPower(0);
+//                     leftBackDrive.setPower(0);
+//                     sleep(600);
+//                //strafe (robot right) until intake centered with left spike (2 secs)
+//                 rightFrontDrive.setPower(-wheel_power_multi);
+//                 leftFrontDrive.setPower(+wheel_power_multi);
+//                 rightBackDrive.setPower(+wheel_power_multi);
+//                 leftBackDrive.setPower(-wheel_power_multi);
+//                     sleep(2000);
+//                     rightFrontDrive.setPower(0);
+//                     leftFrontDrive.setPower(0);
+//                     rightBackDrive.setPower(0);
+//                     leftBackDrive.setPower(0);
+//                     sleep(600);
+//                // drive forward for like 600ms a few inches
+//                 rightFrontDrive.setPower(+wheel_power_multi);
+//                 leftFrontDrive.setPower(+wheel_power_multi);
+//                 rightBackDrive.setPower(+wheel_power_multi);
+//                 leftBackDrive.setPower(+wheel_power_multi);
+//                     sleep(600);
+//                     rightFrontDrive.setPower(0);
+//                     leftFrontDrive.setPower(0);
+//                     rightBackDrive.setPower(0);
+//                     leftBackDrive.setPower(0);
+//                     sleep(600);
+//
+//                 //spit purple pix
+//                 intakeMotor.setPower(-0.4);
+//                    sleep(1000);
+//
+//                //back up for 600ms
+//                 rightFrontDrive.setPower(-wheel_power_multi);
+//                 leftFrontDrive.setPower(-wheel_power_multi);
+//                 rightBackDrive.setPower(-wheel_power_multi);
+//                 leftBackDrive.setPower(-wheel_power_multi);
+//                     sleep(700);
+//                     rightFrontDrive.setPower(0);
+//                     leftFrontDrive.setPower(0);
+//                     rightBackDrive.setPower(0);
+//                     leftBackDrive.setPower(0);
+//                     sleep(700);
+//                //strafe (robot right) for 2 secs
+//                 rightFrontDrive.setPower(-wheel_power_multi);
+//                 leftFrontDrive.setPower(+wheel_power_multi);
+//                 rightBackDrive.setPower(+wheel_power_multi);
+//                 leftBackDrive.setPower(-wheel_power_multi);
+//                     sleep(2000);
+//                     rightFrontDrive.setPower(0);
+//                     leftFrontDrive.setPower(0);
+//                     rightBackDrive.setPower(0);
+//                     leftBackDrive.setPower(0);
+//                     sleep(600);
+//                //stop then drive (robot forwards) for 4 secs into backdrop blue
+//                 rightFrontDrive.setPower(+wheel_power_multi);
+//                 leftFrontDrive.setPower(+wheel_power_multi);
+//                 rightBackDrive.setPower(+wheel_power_multi);
+//                 leftBackDrive.setPower(+wheel_power_multi);
+//                     sleep(4000);
+//                     rightFrontDrive.setPower(0);
+//                     leftFrontDrive.setPower(0);
+//                     rightBackDrive.setPower(0);
+//                     leftBackDrive.setPower(0);
+//                     sleep(1000);
+
                 //end
 
 //
@@ -291,7 +397,9 @@ public class CameraAutoRedLC extends LinearOpMode {
 
 // spike middle
 //middle
-            } if (redBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN && redBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX ) {
+            }
+ // spike middle b
+            if (redBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN && redBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX || gamepad1.b) {
                 telemetry.addLine("i see the prop its on spike middle");
                 telemetry.update();
                 //intake faces wall
@@ -300,15 +408,15 @@ public class CameraAutoRedLC extends LinearOpMode {
                     leftFrontDrive.setPower(-wheel_power_multi);
                     rightBackDrive.setPower(-wheel_power_multi);
                     leftBackDrive.setPower(-wheel_power_multi);
-                        sleep(1900);
+                        sleep(1500);
                         rightFrontDrive.setPower(0);
                         leftFrontDrive.setPower(0);
                         rightBackDrive.setPower(0);
                         leftBackDrive.setPower(0);
-                        sleep(600);
+                        sleep(1000);
                 //outtake purple pix
                 intakeMotor.setPower(0.3);
-                sleep(400);
+                sleep(900);
                 //drive (rb) backwards again for 600ms
                     rightFrontDrive.setPower(-wheel_power_multi);
                     leftFrontDrive.setPower(-wheel_power_multi);
@@ -321,15 +429,15 @@ public class CameraAutoRedLC extends LinearOpMode {
                         leftBackDrive.setPower(0);
                         sleep(600);
                 // drive (rb) forwars 200ms (avoid team prop)
-                    rightFrontDrive.setPower(+wheel_power_multi);
-                    leftFrontDrive.setPower(+wheel_power_multi);
-                    rightBackDrive.setPower(+wheel_power_multi);
-                        sleep(300);
-                        rightFrontDrive.setPower(0);
-                        leftFrontDrive.setPower(0);
-                        rightBackDrive.setPower(0);
-                        leftBackDrive.setPower(0);
-                        sleep(600);
+//                    rightFrontDrive.setPower(+wheel_power_multi);
+//                    leftFrontDrive.setPower(+wheel_power_multi);
+//                    rightBackDrive.setPower(+wheel_power_multi);
+//                        sleep(300);
+//                        rightFrontDrive.setPower(0);
+//                        leftFrontDrive.setPower(0);
+//                        rightBackDrive.setPower(0);
+//                        leftBackDrive.setPower(0);
+//                        sleep(600);
                 // strafe (rb) left for 2 seconds
                     rightFrontDrive.setPower(+wheel_power_multi);
                     leftFrontDrive.setPower(-wheel_power_multi);
@@ -341,12 +449,12 @@ public class CameraAutoRedLC extends LinearOpMode {
                         rightBackDrive.setPower(0);
                         leftBackDrive.setPower(0);
                         sleep(200);
-                // stop rotate (rb) left for 6-500ms
-                    rightFrontDrive.setPower(+wheel_power_multi);
-                    leftFrontDrive.setPower(-wheel_power_multi);
-                    rightBackDrive.setPower(+wheel_power_multi);
-                    leftBackDrive.setPower(-wheel_power_multi);
-                        sleep(550);
+                // stop rotate (rb) left for 6-500ms// (rb right)
+                    rightFrontDrive.setPower(-wheel_power_multi);
+                    leftFrontDrive.setPower(+wheel_power_multi);
+                    rightBackDrive.setPower(-wheel_power_multi);
+                    leftBackDrive.setPower(+wheel_power_multi);
+                        sleep(600);
                         rightFrontDrive.setPower(0);
                         leftFrontDrive.setPower(0);
                         rightBackDrive.setPower(0);
@@ -448,34 +556,13 @@ public class CameraAutoRedLC extends LinearOpMode {
 //                    sleep(1000);
 
             }
-// spike right && prop not found
-             if  (redBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && redBlobDetectionPipeline.getDistance(width) < 40 ){
+// spike //was left lc needs right//Right && prop not found
+//right spike out of bounds y // --1_24_24 7:14pm
+             if  (redBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && redBlobDetectionPipeline.getDistance(width) < 40 || gamepad1.y){
                 telemetry.addLine("i dont see it so it must be spike left");
                 telemetry.update();
 
-                 // drives rb backwards 600ms
-                 rightFrontDrive.setPower(-wheel_power_multi);
-                 leftFrontDrive.setPower(-wheel_power_multi);
-                 rightBackDrive.setPower(-wheel_power_multi);
-                 leftBackDrive.setPower(-wheel_power_multi);
-                     sleep(600);
-                     rightFrontDrive.setPower(0);
-                     leftFrontDrive.setPower(0);
-                     rightBackDrive.setPower(0);
-                     leftBackDrive.setPower(0);
-                     sleep(200);
-                 // strafe (rb) right (align intake with spike left)
-                 rightFrontDrive.setPower(-wheel_power_multi);
-                 leftFrontDrive.setPower(+wheel_power_multi);
-                 rightBackDrive.setPower(+wheel_power_multi);
-                 leftBackDrive.setPower(-wheel_power_multi);
-                     sleep(800);
-                     rightFrontDrive.setPower(0);
-                     leftFrontDrive.setPower(0);
-                     rightBackDrive.setPower(0);
-                     leftBackDrive.setPower(0);
-                     sleep(200);
-                 // drives rb backwards 800ms
+             // drives rb backwards 600ms
                  rightFrontDrive.setPower(-wheel_power_multi);
                  leftFrontDrive.setPower(-wheel_power_multi);
                  rightBackDrive.setPower(-wheel_power_multi);
@@ -485,152 +572,145 @@ public class CameraAutoRedLC extends LinearOpMode {
                      leftFrontDrive.setPower(0);
                      rightBackDrive.setPower(0);
                      leftBackDrive.setPower(0);
-                     sleep(200);
-                 //outtake purple pix
-                 intakeMotor.setPower(0.3);
-                    sleep(600);
-                 //drive (rb) backwards again for 600ms (align with door)
-                 rightFrontDrive.setPower(-wheel_power_multi);
-                 leftFrontDrive.setPower(-wheel_power_multi);
-                 rightBackDrive.setPower(-wheel_power_multi);
-                 leftBackDrive.setPower(-wheel_power_multi);
-                     sleep(600);
-                     rightFrontDrive.setPower(0);
-                     leftFrontDrive.setPower(0);
-                     rightBackDrive.setPower(0);
-                     leftBackDrive.setPower(0);
-                     sleep(200);
-                 // drive (rb) forwars 200ms (avoid team prop)
-                 rightFrontDrive.setPower(+wheel_power_multi);
-                 leftFrontDrive.setPower(+wheel_power_multi);
-                 rightBackDrive.setPower(+wheel_power_multi);
-                 leftBackDrive.setPower(+wheel_power_multi);
                      sleep(300);
+             // rotate (rb left) 400ms
+                 rightFrontDrive.setPower(+wheel_power_multi);
+                 leftFrontDrive.setPower(-wheel_power_multi);
+                 rightBackDrive.setPower(+wheel_power_multi);
+                 leftBackDrive.setPower(-wheel_power_multi);
+                     sleep(400);
                      rightFrontDrive.setPower(0);
                      leftFrontDrive.setPower(0);
                      rightBackDrive.setPower(0);
                      leftBackDrive.setPower(0);
-                     sleep(200);
-                 // strafe (rb) left for 3 seconds
+                     sleep(300);
+                 //spit
+                 intakeMotor.setPower(0.3);
+                    sleep(100);
+                 // rotate right 400ms
+                 rightFrontDrive.setPower(-wheel_power_multi);
+                 leftFrontDrive.setPower(+wheel_power_multi);
+                 rightBackDrive.setPower(-wheel_power_multi);
+                 leftBackDrive.setPower(+wheel_power_multi);
+                     sleep(400);
+                     rightFrontDrive.setPower(0);
+                     leftFrontDrive.setPower(0);
+                     rightBackDrive.setPower(0);
+                     leftBackDrive.setPower(0);
+                     sleep(300);
+                 // drive straight (rb backwards) line up 600ms
+                 rightFrontDrive.setPower(-wheel_power_multi);
+                 leftFrontDrive.setPower(-wheel_power_multi);
+                 rightBackDrive.setPower(-wheel_power_multi);
+                 leftBackDrive.setPower(-wheel_power_multi);
+                     sleep(800);
+                     rightFrontDrive.setPower(0);
+                     leftFrontDrive.setPower(0);
+                     rightBackDrive.setPower(0);
+                     leftBackDrive.setPower(0);
+                     sleep(300);
+                 //strafe (rb left) 3sec
                  rightFrontDrive.setPower(+wheel_power_multi);
                  leftFrontDrive.setPower(-wheel_power_multi);
                  rightBackDrive.setPower(-wheel_power_multi);
                  leftBackDrive.setPower(+wheel_power_multi);
-                     sleep(3000);
-                     rightFrontDrive.setPower(0);
-                     leftFrontDrive.setPower(0);
-                     rightBackDrive.setPower(0);
-                     leftBackDrive.setPower(0);
-                     sleep(200);
-                 // stop rotate (rb) left for 6-500ms
-                rightFrontDrive.setPower(+wheel_power_multi);
-                leftFrontDrive.setPower(-wheel_power_multi);
-                rightBackDrive.setPower(+wheel_power_multi);
-                leftBackDrive.setPower(-wheel_power_multi);
-                    sleep(550);
-                    rightFrontDrive.setPower(0);
-                    leftFrontDrive.setPower(0);
-                    rightBackDrive.setPower(0);
-                    leftBackDrive.setPower(0);
-                    sleep(300);
-                 // strafe (rb) left 2 seconds
-                 rightFrontDrive.setPower(+wheel_power_multi);
-                 leftFrontDrive.setPower(-wheel_power_multi);
-                 rightBackDrive.setPower(-wheel_power_multi);
-                 leftBackDrive.setPower(+wheel_power_multi);
-                     sleep(3000);
-                     rightFrontDrive.setPower(0);
-                     leftFrontDrive.setPower(0);
-                     rightBackDrive.setPower(0);
-                     leftBackDrive.setPower(0);
-                     sleep(200);
-                 // outake yellow pixel
+                 sleep(800);
+                 //spit
                  intakeMotor.setPower(0.3);
                  sleep(1000);
+                 // drive (rb forwards) 1900ms
+
+
                  //end
 
-//                //straight backwards until  half way to spike (2secs)
+
+
+//
+//                 // strafe (rb) right (aling intake with spike left)
+//                 rightFrontDrive.setPower(-wheel_power_multi);
+//                 leftFrontDrive.setPower(+wheel_power_multi);
+//                 rightBackDrive.setPower(+wheel_power_multi);
+//                 leftBackDrive.setPower(-wheel_power_multi);
+//                 sleep(800);
+//
+//
+//                 rightFrontDrive.setPower(0);
+//                 leftFrontDrive.setPower(0);
+//                 rightBackDrive.setPower(0);
+//                 leftBackDrive.setPower(0);
+//                 sleep(200);
+//                 // drives rb backwards 800ms
 //                 rightFrontDrive.setPower(-wheel_power_multi);
 //                 leftFrontDrive.setPower(-wheel_power_multi);
 //                 rightBackDrive.setPower(-wheel_power_multi);
 //                 leftBackDrive.setPower(-wheel_power_multi);
-//                     sleep(2000);
-//                     rightFrontDrive.setPower(0);
-//                     leftFrontDrive.setPower(0);
-//                     rightBackDrive.setPower(0);
-//                     leftBackDrive.setPower(0);
-//                     sleep(600);
-//                //rotate (robot right) so intake now perpendicular to left spike
-//                 rightFrontDrive.setPower(-wheel_power_multi);
-//                 leftFrontDrive.setPower(+wheel_power_multi);
-//                 rightBackDrive.setPower(-wheel_power_multi);
-//                 leftBackDrive.setPower(+wheel_power_multi);
-//                    sleep(2500);
-//                     rightFrontDrive.setPower(0);
-//                     leftFrontDrive.setPower(0);
-//                     rightBackDrive.setPower(0);
-//                     leftBackDrive.setPower(0);
-//                     sleep(600);
-//                //strafe (robot right) until intake centered with left spike (2 secs)
-//                 rightFrontDrive.setPower(-wheel_power_multi);
-//                 leftFrontDrive.setPower(+wheel_power_multi);
-//                 rightBackDrive.setPower(+wheel_power_multi);
-//                 leftBackDrive.setPower(-wheel_power_multi);
-//                     sleep(2000);
-//                     rightFrontDrive.setPower(0);
-//                     leftFrontDrive.setPower(0);
-//                     rightBackDrive.setPower(0);
-//                     leftBackDrive.setPower(0);
-//                     sleep(600);
-//                // drive forward for like 600ms a few inches
-//                 rightFrontDrive.setPower(+wheel_power_multi);
-//                 leftFrontDrive.setPower(+wheel_power_multi);
-//                 rightBackDrive.setPower(+wheel_power_multi);
-//                 leftBackDrive.setPower(+wheel_power_multi);
-//                     sleep(600);
-//                     rightFrontDrive.setPower(0);
-//                     leftFrontDrive.setPower(0);
-//                     rightBackDrive.setPower(0);
-//                     leftBackDrive.setPower(0);
-//                     sleep(600);
-//
-//                 //spit purple pix
-//                 intakeMotor.setPower(-0.4);
-//                    sleep(1000);
-//
-//                //back up for 600ms
+//                 sleep(800);
+//                 rightFrontDrive.setPower(0);
+//                 leftFrontDrive.setPower(0);
+//                 rightBackDrive.setPower(0);
+//                 leftBackDrive.setPower(0);
+//                 sleep(300);
+//                 //outtake purple pix
+//                 intakeMotor.setPower(400);
+//                 //drive (rb) backwards again for 600ms
 //                 rightFrontDrive.setPower(-wheel_power_multi);
 //                 leftFrontDrive.setPower(-wheel_power_multi);
 //                 rightBackDrive.setPower(-wheel_power_multi);
 //                 leftBackDrive.setPower(-wheel_power_multi);
-//                     sleep(700);
-//                     rightFrontDrive.setPower(0);
-//                     leftFrontDrive.setPower(0);
-//                     rightBackDrive.setPower(0);
-//                     leftBackDrive.setPower(0);
-//                     sleep(700);
-//                //strafe (robot right) for 2 secs
-//                 rightFrontDrive.setPower(-wheel_power_multi);
-//                 leftFrontDrive.setPower(+wheel_power_multi);
-//                 rightBackDrive.setPower(+wheel_power_multi);
-//                 leftBackDrive.setPower(-wheel_power_multi);
-//                     sleep(2000);
-//                     rightFrontDrive.setPower(0);
-//                     leftFrontDrive.setPower(0);
-//                     rightBackDrive.setPower(0);
-//                     leftBackDrive.setPower(0);
-//                     sleep(600);
-//                //stop then drive (robot forwards) for 4 secs into backdrop blue
+//                 sleep(600);
+//                 rightFrontDrive.setPower(0);
+//                 leftFrontDrive.setPower(0);
+//                 rightBackDrive.setPower(0);
+//                 leftBackDrive.setPower(0);
+//                 sleep(300);
+//                 // drive (rb) forwars 200ms (avoid team prop)
 //                 rightFrontDrive.setPower(+wheel_power_multi);
 //                 leftFrontDrive.setPower(+wheel_power_multi);
 //                 rightBackDrive.setPower(+wheel_power_multi);
 //                 leftBackDrive.setPower(+wheel_power_multi);
-//                     sleep(4000);
-//                     rightFrontDrive.setPower(0);
-//                     leftFrontDrive.setPower(0);
-//                     rightBackDrive.setPower(0);
-//                     leftBackDrive.setPower(0);
-//                     sleep(1000);
+//                 sleep(300);
+//                 rightFrontDrive.setPower(0);
+//                 leftFrontDrive.setPower(0);
+//                 rightBackDrive.setPower(0);
+//                 leftBackDrive.setPower(0);
+//                 sleep(300);
+//                 // strafe (rb) left for 3 seconds
+//                 rightFrontDrive.setPower(+wheel_power_multi);
+//                 leftFrontDrive.setPower(-wheel_power_multi);
+//                 rightBackDrive.setPower(-wheel_power_multi);
+//                 leftBackDrive.setPower(+wheel_power_multi);
+//                 sleep(3000);
+//                 rightFrontDrive.setPower(0);
+//                 leftFrontDrive.setPower(0);
+//                 rightBackDrive.setPower(0);
+//                 leftBackDrive.setPower(0);
+//                 sleep(600);
+//                 // stop rotate (rb) left for 6-500ms
+//                 rightFrontDrive.setPower(+wheel_power_multi);
+//                 leftFrontDrive.setPower(-wheel_power_multi);
+//                 rightBackDrive.setPower(+wheel_power_multi);
+//                 leftBackDrive.setPower(-wheel_power_multi);
+//                 sleep(550);
+//                 rightFrontDrive.setPower(0);
+//                 leftFrontDrive.setPower(0);
+//                 rightBackDrive.setPower(0);
+//                 leftBackDrive.setPower(0);
+//                 sleep(300);
+//                 // strafe (rb) left 2 seconds
+//                 rightFrontDrive.setPower(+wheel_power_multi);
+//                 leftFrontDrive.setPower(-wheel_power_multi);
+//                 rightBackDrive.setPower(-wheel_power_multi);
+//                 leftBackDrive.setPower(+wheel_power_multi);
+//                 sleep(2000);
+//                 rightFrontDrive.setPower(0);
+//                 leftFrontDrive.setPower(0);
+//                 rightBackDrive.setPower(0);
+//                 leftBackDrive.setPower(0);
+//                 sleep(600);
+//                 // outake yellow pixel
+//                 intakeMotor.setPower(0.3);
+//                 sleep(1000);
+
             }
                 telemetry.update();
 
@@ -650,7 +730,7 @@ public class CameraAutoRedLC extends LinearOpMode {
 
         // Use OpenCvCameraFactory class from FTC SDK to create camera instance
         controlHubCam = OpenCvCameraFactory.getInstance().createWebcam(
-                hardwareMap.get(WebcamName.class, "webcam1"), cameraMonitorViewId);
+                hardwareMap.get(WebcamName.class, "webcam1"), cameraMonitorViewId); //
 
         controlHubCam.setPipeline(new RedBlobDetectionPipeline());
 
@@ -705,8 +785,8 @@ public class CameraAutoRedLC extends LinearOpMode {
 
         private Mat preprocessFrame(Mat frame) {
             Mat hsvFrame = new Mat();
-            Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_RGB2HSV); // was COLOR_BRG2HSV i chnaged the color space and it worked some how
-                                    // for OpenCv HSV Color Space
+            Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_BGR2HSV); // was COLOR_BRG2HSV i chnaged the color space and it worked some how
+                                    // for OpenCv HSV Color Space COLOR_RGB2HSV
             /*
                     these scalar values are converted from BGR to HSV (Blue, Green, Red) (Hue,Saturation, Value)
 
@@ -717,7 +797,7 @@ public class CameraAutoRedLC extends LinearOpMode {
          1.go to any hsv color picker website i.e. : https://colorpicker.me/#0081ff
          2.find a color that is pretty close to what you want to detect
          3. enter a range of values that's pretty broad for each,
-            this is the HSV vals for a bright alliance marker red.
+            this is the HSV vals for a bright alliance marker blue.
                 EX: Scalar lowerYellow = new Scalar(100, 100, 100);// hue, saturation, value **below statment is equal to this
                     Scalar upperYellow = new Scalar(180, 255, 255);// color, greyness, brightness ** above statment is equal to this
 

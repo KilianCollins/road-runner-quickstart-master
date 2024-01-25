@@ -113,8 +113,8 @@ public class CameraAutoBlueLC extends LinearOpMode {
             telemetry.addData(" actual width val: ", (width));
            // telemetry.addData("  val: ", (width));
 
-// spike right
-            if (blueBlobDetectionPipeline.getDistance(width) > spikeRight_MIN && blueBlobDetectionPipeline.getDistance(width) < spikeRight_MAX ){
+// spike right a
+            if (blueBlobDetectionPipeline.getDistance(width) > spikeRight_MIN && blueBlobDetectionPipeline.getDistance(width) < spikeRight_MAX || gamepad1.a){
                 telemetry.addLine("i see the prop its on spike right ");
                 telemetry.update();
 
@@ -187,8 +187,8 @@ public class CameraAutoBlueLC extends LinearOpMode {
 //                robot.DriveLeftBack.setPower(-multy);
 
 // spike middle
-//middle
-            } if (blueBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN && blueBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX ) {
+//middle b
+            } if (blueBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN && blueBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX || gamepad1.b) {
                 telemetry.addLine("i see the prop its on spike middle 999999999999999");
                 telemetry.update();
 
@@ -272,8 +272,8 @@ public class CameraAutoBlueLC extends LinearOpMode {
                     sleep(1000);
 
             }
-// spike left && prop not found
-             if  (blueBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && blueBlobDetectionPipeline.getDistance(width) < 40 ){
+// spike left && prop not found y
+             if  (blueBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && blueBlobDetectionPipeline.getDistance(width) < 40 || gamepad1.y){
                 telemetry.addLine("i dont see it so it must be spike left");
                 telemetry.update();
                 //straight backwards until  half way to spike (2secs)
