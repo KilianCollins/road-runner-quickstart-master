@@ -32,9 +32,12 @@ package org.firstinspires.ftc.teamcode.drive.LC;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.util.Encoder;
 
 /*
  * This file contains an example of a Linear "OpMode".
@@ -72,6 +75,7 @@ public class TeleOpSanjith1020024 extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive = null;
     private DcMotor left_Shoulder_Motor, right_Shoulder_Motor, elbow_motor, intake_motor = null;
+    private Encoder leftODO,rightODO = null;
     private Servo
             finger_one_servo,
             finger_two_servo,
@@ -113,6 +117,10 @@ public class TeleOpSanjith1020024 extends LinearOpMode {
 
         drone_Launcher_servo = hardwareMap.get(Servo.class, "droneLauncher");
 
+
+        leftODO = new Encoder(hardwareMap.get(DcMotorEx.class, "leftRear"));
+        rightODO = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront"));
+
 ////////////////////////////////////////////////////////////////////////////////////
         //drive
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -131,6 +139,7 @@ public class TeleOpSanjith1020024 extends LinearOpMode {
         drone_Launcher_servo.setDirection(Servo.Direction.REVERSE);
 
         telemetry.addData("Status", "Initialized");
+
 
 
         // telemetry.addData("Front left/Right shoulder pos before start", "%4.2f, %4.2f",left_Shoulder_Motor.getCurrentPosition(), right_Shoulder_Motor.getCurrentPosition());
@@ -274,11 +283,17 @@ public class TeleOpSanjith1020024 extends LinearOpMode {
                 wrist_Right_Servo.setPosition(0.5);
             }
             if(gamepad2.b){ // resting pos
+
                 wrist_Right_Servo.scaleRange(0,1);
                 wrist_Right_Servo.setPosition(0.7);
             }
             if(gamepad2.right_trigger >= 0.5){
+
                 intake_motor.setPower(1);
+//                telemetry.addData("left odo: ", leftODO.getCurrentPosition());
+//                telemetry.addData("right odo: ", rightODO.getCurrentPosition());
+//                telemetry.update();
+
             }
             else{
                 intake_motor.setPower(0);

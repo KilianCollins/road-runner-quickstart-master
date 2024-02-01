@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.drive.AutoLeague3;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.TeleOp.Team6976HWMap;
@@ -11,12 +12,15 @@ public class AutoTeam6976ParkingBlueFar extends LinearOpMode{
 
     Team6976HWMap robot = new Team6976HWMap();
     ElapsedTime Time = new ElapsedTime();
-    private double forwards_power = 0.3;
+    private double forwards_power = 0.4;
+    private DcMotor intakeMotor = null;
     //private double forwards_power = -0.3;
     // double multy = 0.3;
 
     @Override
     public void runOpMode() {
+
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         robot.Map(hardwareMap);
         waitForStart();
 
@@ -47,6 +51,9 @@ public class AutoTeam6976ParkingBlueFar extends LinearOpMode{
         robot.rightBackDrive.setPower(0);
         robot.leftBackDrive.setPower(0);
         sleep(500);
+        intakeMotor.setPower(0.6);
+        sleep(3000);
+
 //
 //    //turn
 //        robot.rightFrontDrive.setPower(forwards_power);//motor 1 //Setting the power to (multy) variable created above

@@ -23,12 +23,8 @@ public class Team6976HWMap2023 {
 
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFrontDrive, leftBackDrive, rightFrontDrive, rightBackDrive = null;
-    private DcMotor left_Shoulder_Motor, right_Shoulder_Motor, elbow_motor, intake_motor = null;
-    private Servo
-            finger_one_servo,
-            finger_two_servo,
-            wrist_Right_Servo,
-            drone_Launcher_servo = null;
+    private DcMotor intakeMotor = null;
+
 
     public void Map(HardwareMap hardwareMap)
     {
@@ -39,20 +35,8 @@ public class Team6976HWMap2023 {
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFront");
         rightBackDrive = hardwareMap.get(DcMotor.class, "rightRear");
 
-        left_Shoulder_Motor = hardwareMap.get(DcMotor.class, "leftShoulderMotor");
-        right_Shoulder_Motor = hardwareMap.get(DcMotor.class, "rightShoulderMotor");
-//jaws
+        intakeMotor = hwMap.get(DcMotor.class, "intakeMotor");
 
-
-        elbow_motor = hardwareMap.get(DcMotor.class, "elbowMotor");
-        intake_motor = hardwareMap.get(DcMotor.class, "intakeMotor");
-
-        finger_one_servo =  hardwareMap.get(Servo.class,"fingerOne");
-        finger_two_servo = hardwareMap.get(Servo.class,"fingerTwo");
-
-        wrist_Right_Servo = hardwareMap.get(Servo.class,"rightWrist");
-
-        drone_Launcher_servo = hardwareMap.get(Servo.class, "droneLauncher");
 
 
 
