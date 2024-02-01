@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.Autonomus;
+package org.firstinspires.ftc.teamcode.drive.LC;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.drive.TeleOp.Team6976HWMap;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -25,9 +24,9 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name = "BLUE RIGHT Auto Test v1")
+@Autonomous(name = "BLUE RIGHT Auto with pixels v3")
 
-public class CameraAutoBlueTest extends LinearOpMode {
+public class CameraAutoBlueLC extends LinearOpMode {
 
    /// Team6976HWMap drive_train = new Team6976HWMap();
 
@@ -114,8 +113,8 @@ public class CameraAutoBlueTest extends LinearOpMode {
             telemetry.addData(" actual width val: ", (width));
            // telemetry.addData("  val: ", (width));
 
-// spike right
-            if (blueBlobDetectionPipeline.getDistance(width) > spikeRight_MIN && blueBlobDetectionPipeline.getDistance(width) < spikeRight_MAX ){
+// spike right a
+            if (blueBlobDetectionPipeline.getDistance(width) > spikeRight_MIN && blueBlobDetectionPipeline.getDistance(width) < spikeRight_MAX || gamepad1.a){
                 telemetry.addLine("i see the prop its on spike right ");
                 telemetry.update();
 
@@ -188,8 +187,8 @@ public class CameraAutoBlueTest extends LinearOpMode {
 //                robot.DriveLeftBack.setPower(-multy);
 
 // spike middle
-//middle
-            } if (blueBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN && blueBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX ) {
+//middle b
+            } if (blueBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN && blueBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX || gamepad1.b) {
                 telemetry.addLine("i see the prop its on spike middle 999999999999999");
                 telemetry.update();
 
@@ -273,8 +272,8 @@ public class CameraAutoBlueTest extends LinearOpMode {
                     sleep(1000);
 
             }
-// spike left && prop not found
-             if  (blueBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && blueBlobDetectionPipeline.getDistance(width) < 40 ){
+// spike left && prop not found y
+             if  (blueBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && blueBlobDetectionPipeline.getDistance(width) < 40 || gamepad1.y){
                 telemetry.addLine("i dont see it so it must be spike left");
                 telemetry.update();
                 //straight backwards until  half way to spike (2secs)

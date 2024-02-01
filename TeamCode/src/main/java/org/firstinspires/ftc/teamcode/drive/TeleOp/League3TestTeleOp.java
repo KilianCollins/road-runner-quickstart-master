@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.drive.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -68,7 +69,7 @@ import org.firstinspires.ftc.teamcode.util.Encoder;
  */
 
 @TeleOp(name="league3 teleOp test for v4 out take")
-//@Disabled
+@Disabled
 
 // the current teleop
 public class League3TestTeleOp extends LinearOpMode {

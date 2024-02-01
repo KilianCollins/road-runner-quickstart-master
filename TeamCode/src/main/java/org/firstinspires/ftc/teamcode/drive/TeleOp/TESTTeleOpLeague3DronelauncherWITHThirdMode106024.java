@@ -29,9 +29,11 @@
 
 package org.firstinspires.ftc.teamcode.drive.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -67,7 +69,7 @@ import org.firstinspires.ftc.teamcode.util.Encoder;
 
 @TeleOp(name="league3 out take system test: drone launcher WITH third mode" +
         "")
-//@Disabled
+@Disabled
 
 // the current teleop
 public class TESTTeleOpLeague3DronelauncherWITHThirdMode106024 extends LinearOpMode {
@@ -131,6 +133,7 @@ public class TESTTeleOpLeague3DronelauncherWITHThirdMode106024 extends LinearOpM
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        intake_motor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         left_Shoulder_Motor.setDirection(DcMotor.Direction.REVERSE);
         right_Shoulder_Motor.setDirection(DcMotor.Direction.REVERSE);
@@ -234,14 +237,17 @@ public class TESTTeleOpLeague3DronelauncherWITHThirdMode106024 extends LinearOpM
                 finger_two_servo.setPosition(0);
             }
 
-
+/* intake now fixed organization needed 1_6_24 */
             if (gamepad1.right_trigger >= 0.5){
                 intake_motor.setPower(0.7);
             }else{
                 intake_motor.setPower(0);
             }
-
-
+            if(gamepad1.right_bumper){
+                intake_motor.setPower(-0.7);
+            }else{
+                intake_motor.setPower(0);
+            }
 
 
 
