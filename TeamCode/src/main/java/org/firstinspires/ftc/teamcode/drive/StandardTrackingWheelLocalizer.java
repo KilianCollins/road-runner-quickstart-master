@@ -33,8 +33,8 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
     public static double WHEEL_RADIUS = 0.944882; // in diamater:1.858268// in raidisu of goblida 0.9291339//
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double LATERAL_DISTANCE = 8.1; //8.5 originally// in; distance between the left and right wheels
-    public static double FORWARD_OFFSET = 0.1; // in; offset of the lateral wheel// was -2.5 12.19.23//
+    public static double LATERAL_DISTANCE = 8; //8.5 originally// in; distance between the left and right wheels
+    public static double FORWARD_OFFSET = 0; // in; offset of the lateral wheel// was -2.5 12.19.23//
     public static double X_MULTIPLIER = 0.969043; // Multiplier in the X direction
     public static double Y_MULTIPLIER = 0.949569; // Multiplier in the Y direction
     private Encoder leftEncoder, rightEncoder, frontEncoder;
@@ -55,13 +55,10 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
         rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront"));
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "rightRear"));
 
-        leftEncoder.setDirection(Encoder.Direction.REVERSE);
-        rightEncoder.setDirection(Encoder.Direction.REVERSE);
+        leftEncoder.setDirection(Encoder.Direction.FORWARD);
+        rightEncoder.setDirection(Encoder.Direction.FORWARD);
         frontEncoder.setDirection(Encoder.Direction.FORWARD);
 
-        leftEncoder.setDirection(Encoder.Direction.REVERSE);
-        rightEncoder.setDirection(Encoder.Direction.REVERSE);
-        frontEncoder.setDirection(Encoder.Direction.REVERSE);
 
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
     }

@@ -29,14 +29,15 @@ public class TestODOAuto extends LinearOpMode{
 
         intakeMotor =   hardwareMap.get(DcMotor.class, "intakeMotor");
 
-        leftODO = new Encoder(hardwareMap.get(DcMotorEx.class, "leftRear"));
+        leftODO = new Encoder(hardwareMap.get(DcMotorEx.class, "leftFront"));
         rightODO = new Encoder(hardwareMap.get(DcMotorEx.class, "rightFront"));
+
 
         waitForStart();
        while (opModeIsActive()){
 
 
-           init_left_pos = leftODO.getCurrentPosition();
+
            init_right_pos = rightODO.getCurrentPosition();
            telemetry.addData(String.valueOf(init_left_pos), " left odo");
            telemetry.addData(String.valueOf(init_right_pos), "right odo");
