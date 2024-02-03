@@ -3,11 +3,12 @@ package org.firstinspires.ftc.teamcode.drive.SemiArea;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-
+@Disabled
 @Autonomous(name="TestOdo", group="auto")
 public class AUTOTest2_2_24 extends LinearOpMode {
 
@@ -25,11 +26,7 @@ public class AUTOTest2_2_24 extends LinearOpMode {
 
         waitForStart();
         drive.followTrajectorySequence(middleSpike);//might need to change
-        while (opModeIsActive()){
 
-
-
-        }
 
 
 

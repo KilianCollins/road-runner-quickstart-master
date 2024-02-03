@@ -5,7 +5,6 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -18,7 +17,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
  */
 @Config
 @Autonomous(group = "drive")
-public class TESTblue extends LinearOpMode {
+public class TestBLuELeft extends LinearOpMode {
     public static double DISTANCE = 60; // in
 
     @Override
@@ -27,10 +26,27 @@ public class TESTblue extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(13.5, 63,Math.toRadians(90));
+        Pose2d startPose = new Pose2d(0, 0,Math.toRadians(0));
         TrajectorySequence middleSpike = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(13.5,33.5))// dont use
-                .lineTo(new Vector2d(13.5,43.5))// dont use
+
+
+                .lineToConstantHeading(new Vector2d(24, 24))
+
+
+//                .lineTo(new Vector2d(50, 33))//needs more towards bckstg
+//                .lineToLinearHeading(new Pose2d(40, 38, Math.toRadians(100)))
+
+
+//                .lineTo(new Vector2d(26,38))
+//                .turn(Math.toRadians(-100)) // adds x deggres to start pos heading
+//                .lineTo(new Vector2d(15,38))
+//                .lineTo(new Vector2d(58,35))
+
+
+
+
+//                .lineTo(new Vector2d(13.5,33.5))// dont use
+//                .lineTo(new Vector2d(13.5,43.5))// dont use
 //                .turn(Math.toRadians(45)) // Turns 45 degrees counter-clockwise
                 .build();
 

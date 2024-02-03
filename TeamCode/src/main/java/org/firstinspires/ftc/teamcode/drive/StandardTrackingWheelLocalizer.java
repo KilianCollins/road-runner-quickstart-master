@@ -33,10 +33,10 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
     public static double WHEEL_RADIUS = 0.944882; // in diamater:1.858268// in raidisu of goblida 0.9291339//
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double LATERAL_DISTANCE = 8; //8.5 originally// in; distance between the left and right wheels
+    public static double LATERAL_DISTANCE = 8.3; //8.5 originally// in; distance between the left and right wheels
     public static double FORWARD_OFFSET = 0; // in; offset of the lateral wheel// was -2.5 12.19.23//
-    public static double X_MULTIPLIER = 0.969043; // Multiplier in the X direction
-    public static double Y_MULTIPLIER = 0.949569; // Multiplier in the Y direction
+    public static double X_MULTIPLIER = 1.026525; // Multiplier in the X direction
+    public static double Y_MULTIPLIER = 1.050338; // Multiplier in the Y direction
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
     private List<Integer> lastEncPositions, lastEncVels;
