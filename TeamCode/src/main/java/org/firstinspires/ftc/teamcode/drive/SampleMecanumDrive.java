@@ -60,7 +60,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
 
-    public static double LATERAL_MULTIPLIER = 1.3;//never less than zero if 2 then distance is doubled
+    public static double LATERAL_MULTIPLIER = 1.6;//never less than zero if 2 then distance is doubled
 
     //justin--cannot go out of order, tune lateral distance befor late
 

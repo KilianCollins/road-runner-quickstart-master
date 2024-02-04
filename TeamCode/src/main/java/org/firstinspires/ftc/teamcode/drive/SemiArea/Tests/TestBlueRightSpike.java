@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.SemiArea;
+package org.firstinspires.ftc.teamcode.drive.SemiArea.Tests;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
  */
 @Config
 @Autonomous(group = "drive")
-public class TestBLuELeft extends LinearOpMode {
+public class TestBlueRightSpike extends LinearOpMode {
     public static double DISTANCE = 60; // in
 
     @Override
@@ -26,12 +26,18 @@ public class TestBLuELeft extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(0, 0,Math.toRadians(0));
+        Pose2d startPose = new Pose2d(14.5, 61,Math.toRadians(90));
         TrajectorySequence middleSpike = drive.trajectorySequenceBuilder(startPose)
 
+// left blue left spike
+                .lineToConstantHeading(new Vector2d(29, 38))// error acounting is 5.5 --6.5in
 
-                .lineToConstantHeading(new Vector2d(24, 24))
+                .turn(Math.toRadians(90))//adds input to current heading
+                .lineTo(new Vector2d(-19,38))
 
+//
+//                .lineTo(new Vector2d(29,59))
+//                .lineTo(new Vector2d(59,55))
 
 //                .lineTo(new Vector2d(50, 33))//needs more towards bckstg
 //                .lineToLinearHeading(new Pose2d(40, 38, Math.toRadians(100)))
