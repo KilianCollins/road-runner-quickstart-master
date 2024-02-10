@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.LC;
+package org.firstinspires.ftc.teamcode.drive.SemiArea.AUTOV2;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -24,9 +24,8 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-@Autonomous(name = "RED LEFT Auto with Pixels v1")
-
-public class CameraAutoRedLC extends LinearOpMode {
+@Autonomous(group = "auto")
+public class RedFRONTSTAGECameraSemiAreaRR extends LinearOpMode {
 
    /// Team6976HWMap drive_train = new Team6976HWMap();
 

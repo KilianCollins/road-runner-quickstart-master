@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.SemiArea.Tests;
+package org.firstinspires.ftc.teamcode.drive.SemiArea.Tests.REDRightSide;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -13,11 +13,13 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 /*
- * This is a simple routine to test translational drive capabilities.
+
+            DONE 2_9_24
+
  */
 @Config
-@Autonomous(group = "drive")
-public class TestBlueRightSpike extends LinearOpMode {
+@Autonomous(name ="side REd Right spike oooooooooLEFT")
+public class TestREDsideRIGHTspikeLEFT extends LinearOpMode {
     public static double DISTANCE = 60; // in
 
     @Override
@@ -29,14 +31,23 @@ public class TestBlueRightSpike extends LinearOpMode {
         Pose2d startPose = new Pose2d(14.5, 61,Math.toRadians(90));
         TrajectorySequence middleSpike = drive.trajectorySequenceBuilder(startPose)
 
-// left blue left spike
-                .lineToConstantHeading(new Vector2d(29, 38))// error acounting is 5.5 --6.5in
 
-                .turn(Math.toRadians(90))//adds input to current heading
-                .lineTo(new Vector2d(-14,38))
-                .lineTo(new Vector2d(38,38))
+                .lineToConstantHeading(new Vector2d(0, 31))// error acounting is 5.5 --6.5in
+                .turn(Math.toRadians(90))
+                .lineToConstantHeading(new Vector2d(14,31))
 
-//
+
+
+                .lineToConstantHeading(new Vector2d(0, 33))// error acounting is 5.5 --6.5in
+
+
+
+                // red backsage left spike
+
+
+
+
+//                .lineToConstantHeading(new Vector2d(29, 35))// error acounting is 5.5 --6.5in
 //                .lineTo(new Vector2d(29,59))
 //                .lineTo(new Vector2d(59,55))
 

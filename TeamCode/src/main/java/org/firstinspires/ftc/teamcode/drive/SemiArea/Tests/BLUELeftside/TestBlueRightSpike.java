@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.SemiArea.Tests;
+package org.firstinspires.ftc.teamcode.drive.SemiArea.Tests.BLUELeftside;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -13,10 +13,12 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 /*
- * This is a simple routine to test translational drive capabilities.
+DONE 2_9_24
+
+
  */
 @Config
-@Autonomous(group = "drive")
+@Autonomous(name ="LEFT SIDE blue RIGHT spike")
 public class TestBlueRightSpike extends LinearOpMode {
     public static double DISTANCE = 60; // in
 
@@ -30,31 +32,12 @@ public class TestBlueRightSpike extends LinearOpMode {
         TrajectorySequence middleSpike = drive.trajectorySequenceBuilder(startPose)
 
 // left blue left spike
-                .lineToConstantHeading(new Vector2d(29, 38))// error acounting is 5.5 --6.5in
+                .lineToConstantHeading(new Vector2d(29, 35))// error acounting is 5.5 --6.5in
 
-                .turn(Math.toRadians(90))//adds input to current heading
-                .lineTo(new Vector2d(-14,38))
-                .lineTo(new Vector2d(38,38))
+                .turn(Math.toRadians(-90))//adds input to current heading
+                .lineTo(new Vector2d(13,35))
+                .lineTo(new Vector2d(38,35))
 
-//
-//                .lineTo(new Vector2d(29,59))
-//                .lineTo(new Vector2d(59,55))
-
-//                .lineTo(new Vector2d(50, 33))//needs more towards bckstg
-//                .lineToLinearHeading(new Pose2d(40, 38, Math.toRadians(100)))
-
-
-//                .lineTo(new Vector2d(26,38))
-//                .turn(Math.toRadians(-100)) // adds x deggres to start pos heading
-//                .lineTo(new Vector2d(15,38))
-//                .lineTo(new Vector2d(58,35))
-
-
-
-
-//                .lineTo(new Vector2d(13.5,33.5))// dont use
-//                .lineTo(new Vector2d(13.5,43.5))// dont use
-//                .turn(Math.toRadians(45)) // Turns 45 degrees counter-clockwise
                 .build();
 
         waitForStart();

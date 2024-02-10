@@ -89,6 +89,8 @@ public class TeleOpSanjith1020024 extends LinearOpMode {
     private double finger_score = 0.75;
     private int arm_resting_pos = 100;
     private int arm_scoring_pos = 3500;
+    private int elbow_scoring_pos = 1800;
+    private int elbow_resting_pos = 50;
 
 
     @Override
@@ -239,7 +241,7 @@ public class TeleOpSanjith1020024 extends LinearOpMode {
                 telemetry.addData("right shoulder down: ", right_Shoulder_Motor.getCurrentPosition());
                 telemetry.update();
 
-                elbow_motor.setTargetPosition(50);
+                elbow_motor.setTargetPosition(elbow_resting_pos);
                 elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elbow_motor.setPower(0.4);
                 telemetry.addData("elbow down: ", elbow_motor.getCurrentPosition());
@@ -257,7 +259,7 @@ public class TeleOpSanjith1020024 extends LinearOpMode {
                 telemetry.addData("right shoulder up: ", right_Shoulder_Motor.getCurrentPosition());
                 telemetry.update();
 
-                elbow_motor.setTargetPosition(1200);
+                elbow_motor.setTargetPosition(elbow_scoring_pos);
                 elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 elbow_motor.setPower(0.4);
                 telemetry.addData("elbow up: ", elbow_motor.getCurrentPosition());

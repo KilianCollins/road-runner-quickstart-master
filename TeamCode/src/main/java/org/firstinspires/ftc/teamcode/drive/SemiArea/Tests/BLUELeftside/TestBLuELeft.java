@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.SemiArea.Tests;
+package org.firstinspires.ftc.teamcode.drive.SemiArea.Tests.BLUELeftside;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -16,8 +16,8 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
  * This is a simple routine to test translational drive capabilities.
  */
 @Config
-@Autonomous(group = "drive")
-public class TestBlueRightSpike extends LinearOpMode {
+@Autonomous(name ="BLUE LEFT side  left spike")
+public class TestBLuELeft extends LinearOpMode {
     public static double DISTANCE = 60; // in
 
     @Override
@@ -30,15 +30,11 @@ public class TestBlueRightSpike extends LinearOpMode {
         TrajectorySequence middleSpike = drive.trajectorySequenceBuilder(startPose)
 
 // left blue left spike
-                .lineToConstantHeading(new Vector2d(29, 38))// error acounting is 5.5 --6.5in
-
-                .turn(Math.toRadians(90))//adds input to current heading
-                .lineTo(new Vector2d(-14,38))
-                .lineTo(new Vector2d(38,38))
-
-//
-//                .lineTo(new Vector2d(29,59))
+                .lineToConstantHeading(new Vector2d(28, 35))// error acounting is 5.5 --6.5in
+                .lineTo(new Vector2d(20,59))
 //                .lineTo(new Vector2d(59,55))
+
+
 
 //                .lineTo(new Vector2d(50, 33))//needs more towards bckstg
 //                .lineToLinearHeading(new Pose2d(40, 38, Math.toRadians(100)))
