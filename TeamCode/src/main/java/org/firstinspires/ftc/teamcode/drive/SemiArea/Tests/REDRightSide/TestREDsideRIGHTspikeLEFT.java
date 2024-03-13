@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -19,6 +20,8 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
  */
 @Config
 @Autonomous(name ="side REd Right spike oooooooooLEFT")
+@Disabled
+
 public class TestREDsideRIGHTspikeLEFT extends LinearOpMode {
     public static double DISTANCE = 60; // in
 
@@ -38,34 +41,9 @@ public class TestREDsideRIGHTspikeLEFT extends LinearOpMode {
 
 
 
-                .lineToConstantHeading(new Vector2d(0, 33))// error acounting is 5.5 --6.5in
+                .lineToConstantHeading(new Vector2d(0, 33))
 
 
-
-                // red backsage left spike
-
-
-
-
-//                .lineToConstantHeading(new Vector2d(29, 35))// error acounting is 5.5 --6.5in
-//                .lineTo(new Vector2d(29,59))
-//                .lineTo(new Vector2d(59,55))
-
-//                .lineTo(new Vector2d(50, 33))//needs more towards bckstg
-//                .lineToLinearHeading(new Pose2d(40, 38, Math.toRadians(100)))
-
-
-//                .lineTo(new Vector2d(26,38))
-//                .turn(Math.toRadians(-100)) // adds x deggres to start pos heading
-//                .lineTo(new Vector2d(15,38))
-//                .lineTo(new Vector2d(58,35))
-
-
-
-
-//                .lineTo(new Vector2d(13.5,33.5))// dont use
-//                .lineTo(new Vector2d(13.5,43.5))// dont use
-//                .turn(Math.toRadians(45)) // Turns 45 degrees counter-clockwise
                 .build();
 
         waitForStart();

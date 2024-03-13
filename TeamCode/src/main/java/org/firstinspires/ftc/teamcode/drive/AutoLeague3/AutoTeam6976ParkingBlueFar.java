@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.drive.AutoLeague3;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.TeleOp.Team6976HWMap;
@@ -21,23 +22,11 @@ public class AutoTeam6976ParkingBlueFar extends LinearOpMode{
     public void runOpMode() {
 
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         robot.Map(hardwareMap);
         waitForStart();
 
-        //Strafes Left
-        //  double distance = 20; //Distance in inches to strafe
-        //multy = 0.3; //Power setting to all motors
-//        robot.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        robot.rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        robot.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        robot.leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        robot.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        robot.rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        robot.leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        robot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        robot.leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        robot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //  double tick = (distance * 537.7)/(4 * Math.PI);
+
         Time.reset();
         robot.rightFrontDrive.setPower(forwards_power);//motor 1 //Setting the power to (multy) variable created above
         robot.leftFrontDrive.setPower(forwards_power);//motor 2 fast //Link to Wheel Direction Mapping Below

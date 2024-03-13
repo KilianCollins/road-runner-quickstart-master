@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -18,6 +19,8 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
  */
 @Config
 @Autonomous(name ="side BLUE Right spike MID")
+@Disabled
+
 public class TestBLUEsideRIGHTspikeMID extends LinearOpMode {
     public static double DISTANCE = 60; // in
     private Servo autoFinger = null;
@@ -37,32 +40,12 @@ public class TestBLUEsideRIGHTspikeMID extends LinearOpMode {
         Pose2d startPose = new Pose2d(14.5, 61, Math.toRadians(90));
         TrajectorySequence middleSpike = drive.trajectorySequenceBuilder(startPose)
 
-// left blue left spike
                 .lineToConstantHeading(new Vector2d(14.5, 33))// error acounting is 5.5 --6.5in
-//                .addDisplacementMarker(()-> autoFinger.setPosition(0.2))
-                //.addDisplacementMarker(() -> autoFinger.setPosition())
+
                 .lineTo(new Vector2d(14.5,48))
 
 
 
-//              end
-
-
-//                .lineTo(new Vector2d(50, 33))//needs more towards bckstg
-//                .lineToLinearHeading(new Pose2d(40, 38, Math.toRadians(100)))
-
-
-//                .lineTo(new Vector2d(26,38))
-//                .turn(Math.toRadians(-100)) // adds x deggres to start pos heading
-//                .lineTo(new Vector2d(15,38))
-//                .lineTo(new Vector2d(58,35))
-
-
-
-
-//                .lineTo(new Vector2d(13.5,33.5))// dont use
-//                .lineTo(new Vector2d(13.5,43.5))// dont use
-//                .turn(Math.toRadians(45)) // Turns 45 degrees counter-clockwis
                 .build();
 
         waitForStart();

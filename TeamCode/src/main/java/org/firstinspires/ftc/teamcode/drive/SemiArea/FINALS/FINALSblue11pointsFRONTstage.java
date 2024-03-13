@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.SemiArea.Tests.REDRightSide;
+package org.firstinspires.ftc.teamcode.drive.SemiArea.FINALS;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -14,13 +14,13 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 /*
-            DONE 2_9_24
+
  */
 @Config
-@Autonomous(name ="side RED Right spike MID")
+@Autonomous(name ="side BLUE Right spike LEFT")
 @Disabled
 
-public class TestREDsideRIGHTspikeMID extends LinearOpMode {
+public class FINALSblue11pointsFRONTstage extends LinearOpMode {
     public static double DISTANCE = 60; // in
 
     @Override
@@ -29,12 +29,11 @@ public class TestREDsideRIGHTspikeMID extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(14.5, 61, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(-37, 61, Math.toRadians(90));
         TrajectorySequence middleSpike = drive.trajectorySequenceBuilder(startPose)
 
-                .lineToConstantHeading(new Vector2d(14.5, 33))// error acounting is 5.5 --6.5in
-
-                .lineTo(new Vector2d(14.5,48))
+                .lineToConstantHeading(new Vector2d(-53, 33))// error acounting is 5.5 --6.5in
+                .lineToConstantHeading(new Vector2d(-53, 43))
 
                 .build();
 

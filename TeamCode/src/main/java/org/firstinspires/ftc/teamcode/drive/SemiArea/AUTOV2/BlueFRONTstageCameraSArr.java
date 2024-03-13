@@ -31,7 +31,7 @@ import java.util.List;
 
 @Autonomous(group = "auto")
 
-public class RedBACKstageCameraSemiAreaRR extends LinearOpMode {
+public class BlueFRONTstageCameraSArr extends LinearOpMode {
 
    /// Team6976HWMap drive_train = new Team6976HWMap();
 
@@ -39,14 +39,13 @@ public class RedBACKstageCameraSemiAreaRR extends LinearOpMode {
     double cY = 0;
     double width = 0;
 
-    double spikeRight_MIN = 21;
-    double spikeRight_MAX = 22.9;
+    double spikeRight_MIN = 13;
+    double spikeRight_MAX = 19;
 
-    double spikeMiddle_MIN = 26;
-            ;//28.36 , 28.38, 28.
-    double spikeMiddle_MAX = 28;
+    double spikeMiddle_MIN = 23;
+    double spikeMiddle_MAX = 29;
 
-    double spike_OUT_OF_BOUNDS = 35.00; // left // truss side
+    double spike_OUT_OF_BOUNDS = 35.00;
 
     private double wheel_power_multi = 0.4;
 
@@ -70,7 +69,7 @@ public class RedBACKstageCameraSemiAreaRR extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
         FtcDashboard.getInstance().startCameraStream(controlHubCam, 30);
 
-        RedBlobDetectionPipeline redBlobDetectionPipeline = new RedBlobDetectionPipeline();
+        BlueBlobDetectionPipeline blueBlobDetectionPipeline = new BlueBlobDetectionPipeline();
 
         Telemetry telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
 
@@ -97,17 +96,17 @@ public class RedBACKstageCameraSemiAreaRR extends LinearOpMode {
 
    while (opModeInInit()) {
        telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
-       telemetry.addData("Distance in Inch", (redBlobDetectionPipeline.getDistance(width)));
+       telemetry.addData("Distance in Inch", (blueBlobDetectionPipeline.getDistance(width)));
        telemetry.update();
 
 //pre initalization confrimation
-       if ((redBlobDetectionPipeline.getDistance(width) > spikeRight_MIN) && (redBlobDetectionPipeline.getDistance(width) < spikeRight_MAX)) {
+       if ((blueBlobDetectionPipeline.getDistance(width) > spikeRight_MIN) && (blueBlobDetectionPipeline.getDistance(width) < spikeRight_MAX)) {
            telemetry.addLine("i see the prop its on spike right ");
 
-       } else if ((redBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN) && (redBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX)) {
+       } else if ((blueBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN) && (blueBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX)) {
            telemetry.addLine("i see the prop its on spike middle ");
 
-       } else if (redBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && redBlobDetectionPipeline.getDistance(width) < 40) {
+       } else if (blueBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && blueBlobDetectionPipeline.getDistance(width) < 40) {
            telemetry.addLine("i dont see it so it must be spike left");
 
        }
@@ -119,62 +118,59 @@ public class RedBACKstageCameraSemiAreaRR extends LinearOpMode {
             while (opModeIsActive()) {
 
             telemetry.addData("Coordinate", "(" + (int) cX + ", " + (int) cY + ")");
-            telemetry.addData("Distance in Inch", (redBlobDetectionPipeline.getDistance(width)));
+            telemetry.addData("Distance in Inch", (blueBlobDetectionPipeline.getDistance(width)));
             telemetry.addData(" actual width val: ", (width));
            // telemetry.addData("  val: ", (width));
-                    // spike left for mirrored is out of veiw
-//spike right
-            if (redBlobDetectionPipeline.getDistance(width) > spikeRight_MIN && redBlobDetectionPipeline.getDistance(width) < spikeRight_MAX || gamepad1.a){
-                telemetry.addLine("i see the prop its on spike left ");
-                telemetry.update();
 
-                Pose2d startPose1 = new Pose2d(14.5, 61,Math.toRadians(90));
+// spike left a
+            if (blueBlobDetectionPipeline.getDistance(width) > spikeRight_MIN && blueBlobDetectionPipeline.getDistance(width) < spikeRight_MAX || gamepad1.a){
+                telemetry.addLine("i see the prop its on spike right ");
+                telemetry.update();
+                Pose2d startPose1 = new Pose2d(-37, 61, Math.toRadians(90));
                 TrajectorySequence middleSpike1 = drive.trajectorySequenceBuilder(startPose1)
 
-                        .lineToConstantHeading(new Vector2d(0, 33))// error acounting is 5.5 --6.5in
-                        .lineToConstantHeading(new Vector2d(0, 50))
+                        .lineToConstantHeading(new Vector2d(-53, 33))// error acounting is 5.5 --6.5in
+                        .lineToConstantHeading(new Vector2d(-53, 43))
 
                         .build();
                 drive.followTrajectorySequence(middleSpike1);
                 break;
-
-            }
- // spike middle b
-            if (redBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN && redBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX || gamepad1.b) {
-                telemetry.addLine("i see the prop its on spike middle");
+// spike middle
+//middle b
+            } if (blueBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN && blueBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX || gamepad1.b) {
+                telemetry.addLine("i see the prop its on spike middle 999999999999999");
                 telemetry.update();
 
-                Pose2d startPose2 = new Pose2d(14.5, 61, Math.toRadians(90));
-                TrajectorySequence middleSpike2 = drive.trajectorySequenceBuilder(startPose2)
+                    Pose2d startPose2 = new Pose2d(14.5, 61, Math.toRadians(90));
+                    TrajectorySequence middleSpike2 = drive.trajectorySequenceBuilder(startPose2)
 
-                        .lineToConstantHeading(new Vector2d(14.5, 33))// error acounting is 5.5 --6.5in
-                        .lineTo(new Vector2d(14.5,48))
-                        .build();
+                            .lineToConstantHeading(new Vector2d(14.5, 33))// error acounting is 5.5 --6.5in
 
-                drive.followTrajectorySequence(middleSpike2);
-                break;
+                            .lineTo(new Vector2d(14.5,48))
 
+                            .build();
+                    drive.followTrajectorySequence(middleSpike2);
+                    break;
             }
-
-//left spike out of bounds y // --1_24_24 7:14pm
-             if  (redBlobDetectionPipeline.getDistance(width) > spike_OUT_OF_BOUNDS && redBlobDetectionPipeline.getDistance(width) < 40 || gamepad1.y){
+// spike right && prop not found y
+             if  (blueBlobDetectionPipeline.getDistance(width) >=30 || blueBlobDetectionPipeline.getDistance(width) <= 12 ){
                 telemetry.addLine("i dont see it so it must be spike left");
                 telemetry.update();
 
-                 Pose2d startPose3 = new Pose2d(14.5, 61,Math.toRadians(90));
+
+                 Pose2d startPose3 = new Pose2d(-37, 61, Math.toRadians(90));
                  TrajectorySequence middleSpike3 = drive.trajectorySequenceBuilder(startPose3)
 
-                         .lineToConstantHeading(new Vector2d(0, 31))// error acounting is 5.5 --6.5in
+                         .lineToConstantHeading(new Vector2d(-53, 33))// error acounting is 5.5 --6.5in
                          .turn(Math.toRadians(90))
-                         .lineToConstantHeading(new Vector2d(14,31))
+                         .lineToConstantHeading(new Vector2d(-36, 33))// error acounting is 5.5 --6.5in
+                         .lineToConstantHeading(new Vector2d(-53, 33))
 
-                         .lineToConstantHeading(new Vector2d(0, 33))
                          .build();
 
                  drive.followTrajectorySequence(middleSpike3);
                  break;
-
-             }
+            }
                 telemetry.update();
 
 
@@ -193,9 +189,9 @@ public class RedBACKstageCameraSemiAreaRR extends LinearOpMode {
 
         // Use OpenCvCameraFactory class from FTC SDK to create camera instance
         controlHubCam = OpenCvCameraFactory.getInstance().createWebcam(
-                hardwareMap.get(WebcamName.class, "webcam1"), cameraMonitorViewId); //
+                hardwareMap.get(WebcamName.class, "webcam1"), cameraMonitorViewId);
 
-        controlHubCam.setPipeline(new RedBlobDetectionPipeline());
+        controlHubCam.setPipeline(new BlueBlobDetectionPipeline());
 
         controlHubCam.openCameraDevice();
         controlHubCam.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
@@ -203,18 +199,18 @@ public class RedBACKstageCameraSemiAreaRR extends LinearOpMode {
 
 
 
-    class RedBlobDetectionPipeline extends OpenCvPipeline {
+    class BlueBlobDetectionPipeline extends OpenCvPipeline {
 
 
         @Override
         public Mat processFrame(Mat input) {
             // Preprocess the frame to detect yellow regions
-            Mat redMask = preprocessFrame(input);
+            Mat blueMask = preprocessFrame(input);
 
             // Find contours of the detected yellow regions
             List<MatOfPoint> contours = new ArrayList<>();
             Mat hierarchy = new Mat();
-            Imgproc.findContours(redMask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+            Imgproc.findContours(blueMask, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
             // Find the largest yellow contour (blob)
             MatOfPoint largestContour = findLargestContour(contours);
@@ -248,8 +244,8 @@ public class RedBACKstageCameraSemiAreaRR extends LinearOpMode {
 
         private Mat preprocessFrame(Mat frame) {
             Mat hsvFrame = new Mat();
-            Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_BGR2HSV); // was COLOR_BRG2HSV i chnaged the color space and it worked some how
-                                    // for OpenCv HSV Color Space COLOR_RGB2HSV
+            Imgproc.cvtColor(frame, hsvFrame, Imgproc.COLOR_RGB2HSV); // was COLOR_BRG2HSV i chnaged the color space and it worked some how
+                                    // for OpenCv HSV Color Space
             /*
                     these scalar values are converted from BGR to HSV (Blue, Green, Red) (Hue,Saturation, Value)
 
@@ -260,23 +256,23 @@ public class RedBACKstageCameraSemiAreaRR extends LinearOpMode {
          1.go to any hsv color picker website i.e. : https://colorpicker.me/#0081ff
          2.find a color that is pretty close to what you want to detect
          3. enter a range of values that's pretty broad for each,
-            this is the HSV vals for a bright alliance marker blue.
+            this is the HSV vals for a bright alliance marker red.
                 EX: Scalar lowerYellow = new Scalar(100, 100, 100);// hue, saturation, value **below statment is equal to this
                     Scalar upperYellow = new Scalar(180, 255, 255);// color, greyness, brightness ** above statment is equal to this
 
              */
-            Scalar lowerRed = new Scalar(70, 70, 70);// Scalar(hue, saturation, value of the color(BRIGHTNESS)
-            Scalar upperRed = new Scalar(180, 255, 255);// in open cv hue == color, saturation == greyness, value == brightness
+            Scalar lowerBlue = new Scalar(70, 70, 70);// Scalar(hue, saturation, value of the color(BRIGHTNESS)
+            Scalar upperBlue = new Scalar(180, 255, 255);// in open cv hue == color, saturation == greyness, value == brightness
 
 
-            Mat redMask = new Mat();
-            Core.inRange(hsvFrame, lowerRed, upperRed, redMask);
+            Mat blueMask = new Mat();
+            Core.inRange(hsvFrame, lowerBlue, upperBlue, blueMask);
 
             Mat kernel = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(5, 5));
-            Imgproc.morphologyEx(redMask, redMask, Imgproc.MORPH_OPEN, kernel);
-            Imgproc.morphologyEx(redMask, redMask, Imgproc.MORPH_CLOSE, kernel);
+            Imgproc.morphologyEx(blueMask, blueMask, Imgproc.MORPH_OPEN, kernel);
+            Imgproc.morphologyEx(blueMask, blueMask, Imgproc.MORPH_CLOSE, kernel);
 
-            return redMask;
+            return blueMask;
         }
 
         private MatOfPoint findLargestContour(List<MatOfPoint> contours) {

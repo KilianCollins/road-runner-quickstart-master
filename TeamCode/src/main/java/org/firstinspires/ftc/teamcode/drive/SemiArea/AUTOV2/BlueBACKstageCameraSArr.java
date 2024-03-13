@@ -129,7 +129,7 @@ public class BlueBACKstageCameraSArr extends LinearOpMode {
                 Pose2d startPose1 = new Pose2d(14.5, 61,Math.toRadians(90));
                 TrajectorySequence middleSpike1 = drive.trajectorySequenceBuilder(startPose1)
 
-// left blue left spike
+
                         .lineToConstantHeading(new Vector2d(29, 35))// error acounting is 5.5 --6.5in
 
                         .turn(Math.toRadians(-90))//adds input to current heading
@@ -137,8 +137,8 @@ public class BlueBACKstageCameraSArr extends LinearOpMode {
                         .lineTo(new Vector2d(38,35))
 
                         .build();
-
                 drive.followTrajectorySequence(middleSpike1);
+                break;
 // spike middle
 //middle b
             } if (blueBlobDetectionPipeline.getDistance(width) > spikeMiddle_MIN && blueBlobDetectionPipeline.getDistance(width) < spikeMiddle_MAX || gamepad1.b) {
@@ -151,13 +151,15 @@ public class BlueBACKstageCameraSArr extends LinearOpMode {
                             .lineTo(new Vector2d(29,59))
                             .lineTo(new Vector2d(59,55))
                             .build();
-
                     drive.followTrajectorySequence(middleSpike2);
+                    break;
             }
 // spike left && prop not found y
              if  (blueBlobDetectionPipeline.getDistance(width) >25 || gamepad1.a){
                 telemetry.addLine("i dont see it so it must be spike left");
                 telemetry.update();
+
+
                  Pose2d startPose3 = new Pose2d(14.5, 61,Math.toRadians(90));
                  TrajectorySequence middleSpike3 = drive.trajectorySequenceBuilder(startPose3)
 
@@ -186,7 +188,7 @@ public class BlueBACKstageCameraSArr extends LinearOpMode {
 
         // Use OpenCvCameraFactory class from FTC SDK to create camera instance
         controlHubCam = OpenCvCameraFactory.getInstance().createWebcam(
-                hardwareMap.get(WebcamName.class, "webcam1"), cameraMonitorViewId);
+                hardwareMap.get(WebcamName.class, "webcam2"), cameraMonitorViewId);
 
         controlHubCam.setPipeline(new BlueBlobDetectionPipeline());
 
@@ -258,7 +260,7 @@ public class BlueBACKstageCameraSArr extends LinearOpMode {
                     Scalar upperYellow = new Scalar(180, 255, 255);// color, greyness, brightness ** above statment is equal to this
 
              */
-            Scalar lowerBlue = new Scalar(100, 100, 100);// Scalar(hue, saturation, value of the color(BRIGHTNESS)
+            Scalar lowerBlue = new Scalar(70, 70, 70);// Scalar(hue, saturation, value of the color(BRIGHTNESS)
             Scalar upperBlue = new Scalar(180, 255, 255);// in open cv hue == color, saturation == greyness, value == brightness
 
 

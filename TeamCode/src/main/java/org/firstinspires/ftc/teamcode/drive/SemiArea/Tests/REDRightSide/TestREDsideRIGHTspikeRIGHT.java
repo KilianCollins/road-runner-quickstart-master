@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -19,6 +20,8 @@ DONE 2_9_24 0,0 is ofest to the right in this file by 24in
  */
 @Config
 @Autonomous(name ="side RED Right spike Right")
+@Disabled
+
 public class TestREDsideRIGHTspikeRIGHT extends LinearOpMode {
     public static double DISTANCE = 60; // in
 
@@ -32,37 +35,8 @@ public class TestREDsideRIGHTspikeRIGHT extends LinearOpMode {
         TrajectorySequence middleSpike = drive.trajectorySequenceBuilder(startPose)
 
                 .lineToConstantHeading(new Vector2d(0, 33))// error acounting is 5.5 --6.5in
-                .lineToConstantHeading(new Vector2d(0, 50))// error acounting is 5.5 --6.5in
+                .lineToConstantHeading(new Vector2d(0, 50))
 
-                //adds input to current heading
-
-//                .lineTo(new Vector2d(-25,50))
-                //end
-                //end
-
-
-
-
-// left blue left spike
-//                .lineToConstantHeading(new Vector2d(29, 35))// error acounting is 5.5 --6.5in
-//                .lineTo(new Vector2d(29,59))
-//                .lineTo(new Vector2d(59,55))
-
-//                .lineTo(new Vector2d(50, 33))//needs more towards bckstg
-//                .lineToLinearHeading(new Pose2d(40, 38, Math.toRadians(100)))
-
-
-//                .lineTo(new Vector2d(26,38))
-//                .turn(Math.toRadians(-100)) // adds x deggres to start pos heading
-//                .lineTo(new Vector2d(15,38))
-//                .lineTo(new Vector2d(58,35))
-
-
-
-
-//                .lineTo(new Vector2d(13.5,33.5))// dont use
-//                .lineTo(new Vector2d(13.5,43.5))// dont use
-//                .turn(Math.toRadians(45)) // Turns 45 degrees counter-clockwise
                 .build();
 
         waitForStart();

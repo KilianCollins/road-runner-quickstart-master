@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -20,6 +21,8 @@ DONE WORKS 2_9_24
  */
 @Config
 @Autonomous(name ="Left side RED spike RIGHT")
+@Disabled
+
 public class TestREDsideLEFTspikeRIGHT extends LinearOpMode {
     public static double DISTANCE = 60; // in
 
@@ -40,23 +43,7 @@ public class TestREDsideLEFTspikeRIGHT extends LinearOpMode {
 
 
 
-
-//                .lineTo(new Vector2d(50, 33))//needs more towards bckstg
-//                .lineToLinearHeading(new Pose2d(40, 38, Math.toRadians(100)))
-
-
-//                .lineTo(new Vector2d(26,38))
-//                .turn(Math.toRadians(-100)) // adds x deggres to start pos heading
-//                .lineTo(new Vector2d(15,38))
-//                .lineTo(new Vector2d(58,35))
-
-
-
-
-//                .lineTo(new Vector2d(13.5,33.5))// dont use
-//                .lineTo(new Vector2d(13.5,43.5))// dont use
-//                .turn(Math.toRadians(45)) // Turns 45 degrees counter-clockwise
-                .build();
+            .build();
 
         waitForStart();
 

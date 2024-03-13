@@ -67,7 +67,7 @@ import org.firstinspires.ftc.teamcode.util.Encoder;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Sanjith teleOp"  + "")
+@TeleOp(name="Barath teleOp")
 //@Disabled
 
 // the current teleop
@@ -89,7 +89,7 @@ public class TeleOpSanjith1020024 extends LinearOpMode {
     private double finger_score = 0.75;
     private int arm_resting_pos = 100;
     private int arm_scoring_pos = 3500;
-    private int elbow_scoring_pos = 1800;
+    private int elbow_scoring_pos = 1900;
     private int elbow_resting_pos = 50;
 
 
@@ -99,8 +99,7 @@ public class TeleOpSanjith1020024 extends LinearOpMode {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //drive
-        leftFrontDrive = hardwareMap.get(DcMotor.class, "leftFront");
-        leftBackDrive = hardwareMap.get(DcMotor.class, "leftRear");
+         leftBackDrive = hardwareMap.get(DcMotor.class, "leftRear");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "rightFront");
         rightBackDrive = hardwareMap.get(DcMotor.class, "rightRear");
 
@@ -130,7 +129,7 @@ public class TeleOpSanjith1020024 extends LinearOpMode {
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 
-        intake_motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        intake_motor.setDirection(DcMotorSimple.Direction.FORWARD);
 
         left_Shoulder_Motor.setDirection(DcMotor.Direction.REVERSE);
         right_Shoulder_Motor.setDirection(DcMotor.Direction.REVERSE);
@@ -229,6 +228,43 @@ public class TeleOpSanjith1020024 extends LinearOpMode {
 //                }
 //
 //            }
+
+            if(gamepad2.right_bumper){//hang
+                elbow_motor.setTargetPosition(1000);
+                elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elbow_motor.setPower(0.3);
+                left_Shoulder_Motor.setTargetPosition(arm_resting_pos);
+                left_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                left_Shoulder_Motor.setPower(0.5);
+                telemetry.addData("left shoulder up: ", left_Shoulder_Motor.getCurrentPosition());
+                telemetry.update();
+                right_Shoulder_Motor.setTargetPosition(arm_resting_pos);
+                right_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                right_Shoulder_Motor.setPower(0.5);
+            }
+            if(gamepad2.left_bumper){//hang
+                left_Shoulder_Motor.setTargetPosition(arm_scoring_pos);
+                left_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                left_Shoulder_Motor.setPower(0.5);
+                telemetry.addData("left shoulder up: ", left_Shoulder_Motor.getCurrentPosition());
+                telemetry.update();
+                right_Shoulder_Motor.setTargetPosition(arm_scoring_pos);
+                right_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                right_Shoulder_Motor.setPower(0.5);
+
+                elbow_motor.setTargetPosition(elbow_scoring_pos);
+                elbow_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                elbow_motor.setPower(0.3);
+
+            }
+
+
+
+
+
+
+
+
             if (gamepad2.dpad_down) { /* left right down */
                 left_Shoulder_Motor.setTargetPosition(arm_resting_pos);
                 left_Shoulder_Motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
