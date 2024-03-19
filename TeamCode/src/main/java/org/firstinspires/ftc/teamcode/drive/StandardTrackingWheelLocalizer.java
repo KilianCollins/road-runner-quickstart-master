@@ -17,14 +17,14 @@ import java.util.List;
 /*
  * Sample tracking wheel localizer implementation assuming the standard configuration:
  *
- *    /--------------\
+ *   /---- ---- ------\
  *    |     ____     |
  *    |     ----     |
  *    | ||        || |
  *    | ||        || |
  *    |              |
  *    |              |
- *    \--------------/
+ *   \---- ------ ----/
  *
  */
 @Config
@@ -35,8 +35,8 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
 
     public static double LATERAL_DISTANCE = 8.52; //8.5 originally// in; distance between the left and right wheels
     public static double FORWARD_OFFSET = 0; // in; offset of the lateral wheel// was -2.5 12.19.23//
-    public static double X_MULTIPLIER = 1.026525; // Multiplier in the X direction
-    public static double Y_MULTIPLIER = 0.954821; // Multiplier in the Y direction
+    public static double X_MULTIPLIER = 1; // Multiplier in the X direction
+    public static double Y_MULTIPLIER = 1; // Multiplier in the Y direction
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
     private List<Integer> lastEncPositions, lastEncVels;
@@ -87,9 +87,9 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
     }
 
     // add a little bit of spice~ *cue mozart*
-    @NonNull
     @Override
     public List<Double> getWheelVelocities() {
+
         int leftVel = (int) leftEncoder.getCorrectedVelocity();
         int rightVel = (int) rightEncoder.getCorrectedVelocity();
         int frontVel = (int) frontEncoder.getCorrectedVelocity();
@@ -103,6 +103,8 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
                 encoderTicksToInches(leftVel) * X_MULTIPLIER,
                 encoderTicksToInches(rightVel) * X_MULTIPLIER,
                 encoderTicksToInches(frontVel) * Y_MULTIPLIER
+
+
         );
     }
 }
